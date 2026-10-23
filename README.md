@@ -18,7 +18,7 @@ Um mapa do Rio de Janeiro feito com os letreiros do comércio de bairro. Os nome
 
 ## De onde vêm os dados
 
-- **CNPJ** (Receita Federal), pela [Base dos Dados](https://basedosdados.org) no BigQuery (`br_me_cnpj.estabelecimentos`): todos os estabelecimentos do município do Rio, com nome fantasia, atividade (CNAE), situação, endereço e bairro.
+- **CNPJ** (Receita Federal), pela [Base dos Dados](https://basedosdados.org) no BigQuery (`br_me_cnpj.estabelecimentos`, retrato de 11/01/2026): os estabelecimentos do município do Rio ativos ou fechados a partir de 2021, com nome fantasia, atividade (CNAE), situação, endereço e bairro (quando vazio, o mais frequente do mesmo CEP).
 - **Logradouros e trechos de rua** (Instituto Pereira Passos / [data.rio](https://www.data.rio)), camada `CadLog/Trechos_Logradouros` do servidor de mapas da Prefeitura: a geometria de cada trecho de rua e a faixa de numeração de cada lado.
 - **Limite de bairros** (IPP / data.rio), camada `Hosted/LimitedeBairroshosted`: o desenho dos bairros, com a área de planejamento e a região de planejamento de cada um.
 
@@ -43,7 +43,7 @@ make site                             # 03, 04 e 05: -> dados/intermediarios/ e 
 make servir                           # http://localhost:8000
 ```
 
-Sem o Python do BigQuery, dá para rodar `pipeline/01_cnpj_rio.sql` no console do BigQuery e salvar o resultado em `dados/brutos/cnpj_rio.csv`. A consulta foi **reconstruída** (a original não foi guardada); vale conferir o resultado.
+Sem o Python do BigQuery, dá para rodar `pipeline/01_cnpj_rio.sql` no console do BigQuery e salvar o resultado em `dados/brutos/cnpj_rio.csv`. A consulta pega o retrato de janeiro de 2026 (ativos e os que fecharam a partir de 2021); para um retrato mais novo, troque `ano` e `mes`.
 
 | Passo | Lê | Grava |
 |---|---|---|
@@ -55,7 +55,7 @@ Sem o Python do BigQuery, dá para rodar `pipeline/01_cnpj_rio.sql` no console d
 
 `dados/` fica fora do git (os arquivos passam de 100 MB). O site em `docs/` é uma versão estática, publicada pelo GitHub Pages.
 
-**Baixar de novo não dá exatamente o mesmo site.** A versão de `docs/` foi feita com o extrato de CNPJ de 21/10/2026 e com cópias antigas dos mapas da Prefeitura; com esses arquivos, os passos 03 a 05 reproduzem `docs/` byte a byte. Com os mapas baixados hoje pelo passo 02, o resultado muda pouco (50.564 comércios no mapa em vez de 50.584; os bairros de destaque continuam os mesmos), por duas razões:
+**Baixar de novo não dá exatamente o mesmo site.** A versão de `docs/` foi feita com o extrato de CNPJ baixado em 21/10/2026 (retrato de 11/01/2026) e com cópias antigas dos mapas da Prefeitura; com esses arquivos, os passos 03 a 05 reproduzem `docs/` byte a byte. Com os mapas baixados hoje pelo passo 02, o resultado muda pouco (50.564 comércios no mapa em vez de 50.584; os bairros de destaque continuam os mesmos), por duas razões:
 - o servidor tem 65 trechos de rua a mais que a cópia antiga;
 - a camada de bairros do servidor não tem Argentino nem Ingleses e junta Imperial de São Cristóvão em São Cristóvão, enquanto o cadastro de logradouros usa os nomes novos. Vale tratar isso (como em `GRAFIA`, no `05_exporta.py`) antes de republicar.
 
