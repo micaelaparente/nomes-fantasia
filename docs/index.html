@@ -1,0 +1,771 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nomes fantasia · Uma homenagem à criatividade do carioca em dar nome a comércios de rua</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+/* A rua fala alto, a interface fala baixo: toda a cor e o volume são dos letreiros; o resto é tinta sobre papel.
+   Desktop: faixa no topo, coluna editorial à esquerda (capítulo, lema, tipos), palco com o mapa à direita,
+   capítulos embaixo como toldos. Celular: tudo empilhado, capítulos em pílulas que rolam de lado.
+   O papel é claro de propósito nos dois temas (é a peça). */
+:root {
+  --papel: #EFE9DF; --ladrilho: #DCD4C7; --ladrilho-raro: #E6DFD4; --tinta: #16140F; --tinta-2: #5F5A50; --linha: #CFC6B8;
+  --aumentativo: #3A3FB8; --diminutivo: #F07FAE;   /* ãos pesados (anil), inhos leves (rosa-chiclete) */
+  --chamados: #F2A900; --promessas: #2A9D8F; --primeira: #9B5DE5; --interjeicoes: #FF6B35;
+  --ingles: #1D4ED8; --frances: #FF4FA3; --imigracao: #00995C; --migracao: #FF7A00;
+  --avos: #7C3AED; --pais: #E3241B; --tios: #FF7A00; --irmaos: #00A3B4; --filhos: #FFC400; --agregados: #00995C;
+  --catolico: #1D4ED8; --evangelico: #F59E0B; --afro: #00995C; --cristao: #7C3AED;
+  --placa: "Bungee", "Arial Black", Impact, sans-serif;
+  --texto: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --voz: "Instrument Serif", Georgia, serif;
+  --margem: max(40px, env(safe-area-inset-left));
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --papel: #EFE9DF; } }
+:root[data-theme="dark"] { --papel: #EFE9DF; }
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--papel); color: var(--tinta); font: 400 16px/1.45 var(--texto); }
+button { font: inherit; color: inherit; }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--tinta); outline-offset: 2px; }
+.rotulo-cap { font: 600 11px/1 var(--texto); letter-spacing: .12em; text-transform: uppercase; color: var(--tinta-2); }
+
+.app { height: 100dvh; min-height: 640px; display: grid; overflow: hidden;
+  grid-template-columns: clamp(320px, 28vw, 420px) 1fr; grid-template-rows: 64px auto 1fr 80px;
+  grid-template-areas: "topo topo" "cabeca palco" "tipos palco" "caps caps"; }
+
+/* topo: assinatura numa voz só (a serifa), pausa e "sobre" */
+.topo { grid-area: topo; display: flex; align-items: center; gap: 28px; padding: 0 var(--margem); border-bottom: 1.5px solid var(--tinta); position: relative; z-index: 5; }
+.assinatura { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 16px; }
+h1 { margin: 0; font: italic 400 30px/1 var(--voz); white-space: nowrap; }
+.tagline { margin: 0; min-width: 0; font: 400 19px/1.1 var(--voz); color: var(--tinta-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pausa { height: 40px; padding: 0 16px 0 12px; display: inline-flex; align-items: center; gap: 8px; background: none; border: 1.5px solid var(--tinta); border-radius: 999px; font: 600 14px/1 var(--texto); cursor: pointer; }
+.pausa svg { width: 14px; height: 14px; }
+.sobre { position: relative; }
+.sobre summary { cursor: pointer; list-style: none; height: 40px; display: flex; align-items: center; font: italic 400 20px var(--voz); text-decoration: underline 1px; text-underline-offset: 4px; }
+.sobre summary::-webkit-details-marker { display: none; }
+.sobre div { position: absolute; right: 0; top: 48px; width: min(380px, 86vw); background: var(--papel); border: 1.5px solid var(--tinta); box-shadow: 6px 6px 0 var(--tinta); padding: 20px 22px 22px; display: grid; gap: 10px; }
+.sobre p { margin: 0; font: 400 14px/1.45 var(--texto); }
+.sobre p:first-child { font: italic 400 19px/1.2 var(--voz); }
+.sobre p:last-child { font-size: 13px; color: var(--tinta-2); }
+
+/* coluna editorial: capítulo, lema e a tabela de tipos (do mais comum ao menos comum, no lugar escolhido) */
+.cabeca, .tipos-bloco { border-right: 1px solid var(--linha); padding: 0 40px 0 var(--margem); }
+/* compacta para caber sem rolagem numa tela de notebook; abaixo de 800px de altura, mais compacta ainda */
+.cabeca { grid-area: cabeca; padding-top: 24px; display: grid; gap: 10px; }
+.tipos-bloco { grid-area: tipos; padding-top: 16px; padding-bottom: 16px; display: flex; flex-direction: column; gap: 12px; overflow: auto; }
+.olho { display: flex; align-items: center; gap: 10px; font: 400 13px/1 var(--placa); }
+.olho .de { color: var(--tinta-2); }
+.olho hr { flex: 1; margin: 0; border: 0; border-top: 1px solid var(--tinta); }
+h2 { margin: 0; font: 800 clamp(36px, 3.4vw, 52px)/.9 var(--texto); font-stretch: 75%; letter-spacing: -.012em; }
+.lema { margin: 0; font: italic 400 clamp(16px, 1.25vw, 18px)/1.2 var(--voz); }
+/* os tipos são legenda e filtro, sem números: a classificação é por regras e tem erros, a cor já diz o suficiente */
+.tabela-topo { padding-bottom: 8px; border-bottom: 1.5px solid var(--tinta); }
+.legenda { display: flex; flex-direction: column; }
+.legenda button { min-height: 38px; padding: 0 8px; display: flex; align-items: center; gap: 12px; background: transparent; border: 0; border-bottom: 1px solid var(--linha); text-align: left; cursor: pointer; transition: opacity .25s, background .25s; }
+.legenda button i { width: 13px; height: 13px; flex: none; }
+.legenda .nome { flex: 1; font: 650 15px/1.1 var(--texto); }
+.legenda.foco button[aria-pressed="false"] { opacity: .42; }
+.leitura { margin: 8px 0 0; display: flex; align-items: center; gap: 10px; font: italic 400 14px/1.25 var(--voz); color: var(--tinta-2); }
+.leitura .escala { display: flex; gap: 2px; flex: none; }
+.leitura .escala i { width: 10px; height: 10px; }
+.onde { display: grid; gap: 6px; }
+.onde p { margin: 0; font: italic 400 15px/1.3 var(--voz); color: var(--tinta-2); }
+@media (max-height: 800px) and (min-width: 761px) {
+  .cabeca { padding-top: 20px; gap: 8px; }
+  h2 { font-size: 46px; }
+  .lema { font-size: 16px; }
+  .tipos-bloco { padding-top: 14px; gap: 10px; }
+  .legenda button { min-height: 34px; }
+}
+@media (max-height: 680px) and (min-width: 761px) {   /* notebook pequeno: some a instrução, fica o que o lugar diz */
+  h2 { font-size: 38px; }
+  .legenda button { min-height: 30px; }
+  .onde .como { display: none; }
+}
+@media (max-height: 620px) and (min-width: 761px) {
+  h2 { font-size: 30px; }
+  .legenda button { min-height: 26px; }
+}
+.onde p strong { font-weight: 400; color: var(--tinta); }
+
+/* balão do bairro (hover no computador, toque no celular): nome, o quanto o tipo se destaca, em palavras, e letreiros de exemplo */
+.balao { position: absolute; z-index: 3; max-width: 280px; padding: 10px 12px 11px; display: grid; gap: 4px; background: var(--tinta); color: var(--papel); pointer-events: none; transform: translate(-50%, -100%); }
+.balao b { font: 800 17px/1.05 var(--texto); font-stretch: 85%; }
+.balao span { font: 600 13px/1.3 var(--texto); }
+.balao span i { display: inline-block; width: 9px; height: 9px; margin-right: 6px; }
+.balao em { font: italic 400 15px/1.25 var(--voz); color: #D9D1C4; }
+.balao[hidden] { display: none; }
+
+/* palco: o mapa e os nomes ocupando o papel em volta */
+.palco { grid-area: palco; position: relative; overflow: hidden; min-height: 0; touch-action: pan-y; }   /* a pinça fica com o mapa; rolar a página continua */
+.palco canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.rotulos { position: absolute; inset: 0; pointer-events: none; }
+.rotulo { position: absolute; max-width: 260px; display: grid; gap: 4px; transition: opacity .6s; animation: entra .5s cubic-bezier(.2,.7,.2,1) .6s backwards; }   /* o nome entra quando a chamada chega */
+@keyframes entra { from { opacity: 0; transform: translateY(6px); } }
+.rotulo b { font: 400 22px/1.12 var(--placa); text-transform: uppercase; letter-spacing: .01em; }
+.rotulo b mark { color: inherit; background: linear-gradient(transparent 56%, var(--marca) 56%, var(--marca) 92%, transparent 92%); -webkit-box-decoration-break: clone; box-decoration-break: clone; padding: 0 .08em; }
+.rotulo small { font: italic 400 17px/1.1 var(--voz); color: var(--tinta-2); }
+.rotulo.conversa b mark::before { content: "— "; }
+.rotulo.sobre-mapa { padding: 6px 8px; background: rgb(239 233 223 / .9); }   /* aproximado, o nome pode cair sobre o mapa apagado */
+
+/* trilha: onde se está (Rio › região › bairro) e como chegar mais perto, no alto do palco */
+.trilha { position: absolute; z-index: 2; left: 28px; right: 28px; top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; font: 600 14px/1.2 var(--texto); pointer-events: none; }
+.trilha > * { pointer-events: auto; }
+.trilha .dica { font: italic 400 17px/1 var(--voz); color: var(--tinta-2); }
+.trilha button { min-height: 34px; padding: 0; background: none; border: 0; cursor: pointer; text-decoration: underline 1px var(--linha); text-underline-offset: 5px; }
+.trilha button:hover { text-decoration-color: var(--tinta); }
+.trilha .volta { text-decoration: none; color: var(--tinta-2); display: inline-flex; align-items: center; gap: 6px; }
+.trilha .volta:hover { color: var(--tinta); }
+.trilha b { font: 800 26px/1 var(--texto); font-stretch: 78%; }
+
+/* capítulos embaixo: cinco toldos, cada um com a listra das cores dos seus tipos */
+.capitulos { grid-area: caps; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1.5px solid var(--tinta); }
+.capitulos button { position: relative; padding: 18px 24px 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; background: transparent; border: 0; border-right: 1px solid var(--linha); text-align: left; cursor: pointer; transition: background .3s, color .3s; }
+.capitulos button:last-child { border-right: 0; }
+.capitulos button:hover { background: var(--ladrilho-raro); }
+.capitulos .listra { position: absolute; left: 0; right: 0; top: 0; height: 4px; transition: height .3s; }
+.capitulos .num { display: flex; width: 100%; justify-content: space-between; align-items: baseline; font: 400 12px/1 var(--placa); color: var(--tinta-2); }
+.capitulos .num small { font: 600 11px/1 var(--texto); letter-spacing: .08em; font-variant-numeric: tabular-nums; }
+.capitulos b { font: 700 19px/1.05 var(--texto); font-stretch: 82%; }
+.capitulos button[aria-pressed="true"] { background: var(--tinta); color: var(--papel); }
+.capitulos button[aria-pressed="true"] .num { color: var(--papel); }
+.capitulos button[aria-pressed="true"] .listra { height: 8px; }
+
+/* celular: topo, pílulas de capítulo, cabeça, mapa, tipos; a página rola */
+@media (max-width: 760px) {
+  :root { --margem: 16px; }
+  .app { height: auto; min-height: 100dvh; overflow: visible; grid-template-columns: 1fr; grid-template-rows: 52px auto auto 440px auto;
+    grid-template-areas: "topo" "caps" "cabeca" "palco" "tipos"; }
+  .topo { gap: 4px; padding-right: 8px; }
+  .topo h1 { font-size: 24px; }
+  .tagline, .pausa span { display: none; }
+  .pausa { width: 44px; height: 44px; padding: 0; justify-content: center; border: 0; margin-left: auto; }
+  .capitulos { display: flex; gap: 6px; padding: 8px 16px; overflow-x: auto; border-top: 0; border-bottom: 1px solid var(--linha); }
+  .capitulos button { flex: none; height: 40px; padding: 0 14px; flex-direction: row; align-items: center; gap: 7px; border: 1.5px solid var(--tinta); border-radius: 999px; }
+  .capitulos button:last-child { border-right: 1.5px solid var(--tinta); }
+  .capitulos .listra, .capitulos .num small { display: none; }
+  .capitulos .num { width: auto; font-size: 10px; }
+  .capitulos b { font-size: 15px; white-space: nowrap; }
+  .cabeca, .tipos-bloco { border-right: 0; padding-right: 16px; }
+  .cabeca { padding-top: 18px; gap: 8px; }
+  h2 { font-size: 38px; }
+  .lema { font-size: 17px; }
+  .tipos-bloco { padding-top: 0; overflow: visible; }
+  .legenda button { min-height: 44px; }
+  .trilha { left: 16px; right: 16px; top: 12px; gap: 2px 12px; font-size: 13px; }
+  .trilha .dica { flex-basis: 100%; font-size: 15px; }
+  .trilha b { font-size: 21px; }
+  .trilha button { min-height: 40px; }
+  .rotulo { max-width: 170px; gap: 2px; }
+  .rotulo b { font-size: 15px; }
+  .rotulo small { font-size: 14px; }
+}
+</style>
+
+<div class="app">
+  <header class="topo">
+    <div class="assinatura"><h1>Nomes fantasia</h1><p class="tagline">Uma homenagem à criatividade do carioca em dar nome a comércios de rua</p></div>
+    <button class="pausa" id="pausa" aria-label="Pausar"></button>
+    <details class="sobre">
+      <summary>sobre</summary>
+      <div>
+        <p>Um atlas inusitado do Rio: fé, família, sotaques e frases feitas, lidos no letreiro do comércio de bairro.</p>
+        <p>No mapa, a cor mais forte marca onde o tipo de nome é mais comum que na média da cidade; toque num tipo para ver só ele, ou numa região para chegar mais perto (a roda do mouse e a pinça também aproximam). As regiões são as Áreas de Planejamento da Prefeitura, com a Grande Tijuca separada da Zona Sul. Os números comparam nomes, não pessoas: mostram como o comércio se batiza, não quem mora em cada lugar.</p>
+        <p>50 mil comércios de bairro ativos (CNPJ, Receita Federal): pequenos negócios com fachada para a rua, fora redes, franquias, bancos e shoppings. Os nomes foram classificados por regras de linguagem, e o tipo de cada comércio é a atividade declarada à Receita (CNAE), não necessariamente o que vende hoje; há erros.</p>
+      </div>
+    </details>
+  </header>
+
+  <section class="cabeca">
+    <div class="olho"><span id="capNum"></span><span class="de">/ 05</span><hr></div>
+    <h2 id="capNome"></h2>
+    <p class="lema" id="lema"></p>
+  </section>
+
+  <section class="tipos-bloco">
+    <div>
+      <div class="tabela-topo rotulo-cap">Tipos de nome · toque para filtrar</div>
+      <div class="legenda" id="legenda" role="group" aria-label="Tipos de nome"></div>
+      <p class="leitura"><span class="escala" id="escala" aria-hidden="true"></span>Cor mais forte: mais comum ali do que no resto da cidade.</p>
+    </div>
+    <div class="onde" id="onde" aria-live="polite"></div>
+  </section>
+
+  <main class="palco" id="palco">
+    <canvas id="tela" aria-hidden="true"></canvas>
+    <div class="rotulos" id="rotulos" aria-live="polite"></div>
+    <div class="balao" id="balao" role="status" hidden></div>
+    <nav class="trilha" id="trilha" aria-label="Lugar no mapa"></nav>
+  </main>
+
+  <nav class="capitulos" id="capitulos" aria-label="Capítulos"></nav>
+</div>
+
+<script>
+const CAP = {
+  tamanho:  { nome: 'Lojões e lojinhas', lema: 'O carioca aumenta e diminui as coisas por carinho: o Mercadão e o Mercadinho moram na mesma rua.' },
+  frases:   { nome: 'Frases feitas', lema: 'Tem letreiro que não informa, puxa conversa. E do outro lado da cidade alguém responde.' },
+  culturas: { nome: 'Sotaques', lema: 'Portuga no hortifrúti, madame no frango, mineiro no cachorro-quente: a cidade tem sotaque de todo lugar.' },
+  familia:  { nome: 'Família', lema: 'Vó, tia, compadre e sogra: tem comércio que é a família inteira com a porta aberta para a rua.' },
+  fe:       { nome: 'Fé', lema: 'São Jorge no bar, aleluia na ferragem, axé na cachaçaria. A fé sai da igreja e vai trabalhar.' },
+};
+const ORDEM = ['tamanho', 'frases', 'culturas', 'familia', 'fe'];
+const TIPO = { aumentativo: 'Ãos', diminutivo: 'Inhos e inhas', ingles: 'Inglês', frances: 'Francês',
+  chamados: 'Chamados', promessas: 'Promessas', primeira: 'Primeira pessoa', interjeicoes: 'Interjeições',
+  imigracao: 'Imigrantes', migracao: 'Sotaques do Brasil', catolico: 'Santos', evangelico: 'Aleluias',
+  avos: 'Avós', pais: 'Pai e mãe', tios: 'Tios', irmaos: 'Irmãos e primos', filhos: 'Filhos e netos', agregados: 'Sogras e compadres',
+  afro: 'Axés', cristao: 'Deus no comando' };
+const ICONE = { pausar: '<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M4.5 2.5V11.5M9.5 2.5V11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  tocar: '<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 2L12 7L3 12Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>' };
+const e = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase().replace(/[^A-Z0-9 ]/g, '').trim();
+const $ = id => document.getElementById(id);
+
+const tela = $('tela'), ctx = tela.getContext('2d'), palco = $('palco'), camada = $('rotulos');
+const base = document.createElement('canvas'), bctx = base.getContext('2d');
+let D, L, COR = {}, CSS = {}, cap, foco = null, fila = [], passo = 0, relogio, rotulos = [], saindo = [], fixo = [], pausado = false;
+let lugar = null, hover = null, celMap, V, anim = null;   // lugar: null (a cidade) | {tipo: 'regiao', nome}
+let W, H, dpr, T, ox, oy;
+
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const rgb = h => { const n = parseInt(h.slice(1), 16); return [n >> 16, (n >> 8) & 255, n & 255]; };
+const mix = (a, b, t) => { const A = rgb(a), B = rgb(b); return `rgb(${A.map((v, i) => Math.round(v * t + B[i] * (1 - t))).join(',')})`; };
+
+// os dois arquivos são regerados juntos: sempre revalida, para não misturar uma versão nova com outra guardada no cache
+const buscar = f => fetch(f, { cache: 'no-cache' }).then(r => r.json());
+Promise.all([buscar('dados.json'), buscar('lugares.json')]).then(([d, l]) => {
+  D = d; L = l;
+  const cs = getComputedStyle(document.documentElement);
+  for (const k of ['papel', 'ladrilho', 'ladrilho-raro', 'tinta', 'tinta-2', 'linha']) CSS[k] = cs.getPropertyValue('--' + k).trim();
+  for (const s of d.subs) COR[s] = cs.getPropertyValue('--' + s).trim();
+  D.ix0 = Math.min(...d.grade.map(c => c[0])); D.ix1 = Math.max(...d.grade.map(c => c[0]));
+  D.iy0 = Math.min(...d.grade.map(c => c[1])); D.iy1 = Math.max(...d.grade.map(c => c[1]));
+  D.vCidade = { x0: D.ix0, y0: D.iy0, x1: D.ix1 + 1, y1: D.iy1 + 1 }; V = { ...D.vCidade };
+  celMap = new Map(d.grade.map(c => [c[0] + ',' + c[1], c]));
+  const tot = d.grade.reduce((s, c) => s + c[2], 0);
+  D.taxa = d.subs.map((s, i) => d.grade.reduce((a, c) => a + c[3 + i], 0) / tot);
+  d.grade.forEach((c, i) => {                    // vizinhos contam metade, para poucos casos não piscarem
+    const s = new Array(1 + d.subs.length).fill(0);
+    for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) {
+      const o = celMap.get((c[0] + dx) + ',' + (c[1] + dy)); if (!o) continue;
+      const w = dx || dy ? .5 : 1; for (let k = 0; k < s.length; k++) s[k] += o[2 + k] * w;
+    }
+    c.suave = s;
+    const b = L.celula_bairro[0][L.celula_bairro[1][i]];
+    c.bairro = b; c.regiao = b ? L.bairros[b][0] : null;
+  });
+  L.cidade = contagem(null);
+  D.celsRegiao = {}; D.celsBairro = {};          // os quadradinhos de cada região e de cada bairro, para os contornos em degraus
+  for (const c of d.grade) if (c.bairro) { (D.celsRegiao[c.regiao] ||= []).push(c); (D.celsBairro[c.bairro] ||= []).push(c); }
+  const nav = $('capitulos');
+  ORDEM.forEach((c, i) => {
+    const cs = d.conceitos[c], p = 100 / cs.length;
+    const listra = cs.map((s, j) => `${COR[s]} ${(j * p).toFixed(2)}% ${((j + 1) * p).toFixed(2)}%`).join(',');
+    const b = document.createElement('button'); b.dataset.c = c;
+    b.innerHTML = `<span class="listra" style="background:linear-gradient(90deg,${listra})"></span><span class="num">0${i + 1}<small></small></span><b>${CAP[c].nome}</b>`;
+    b.onclick = () => escolher(c); nav.append(b);
+  });
+  $('pausa').onclick = alternarPausa; desenharPausa();
+  palco.addEventListener('pointermove', ev => {
+    if (ev.pointerType !== 'mouse') return;
+    const h = sob(ev);
+    if ((h && h.nome) !== (hover && hover.nome)) { hover = h; mostrarDica(); }
+    palco.style.cursor = hover && hover.tipo === 'regiao' ? 'pointer' : '';
+  });
+  palco.addEventListener('pointerleave', () => { hover = null; palco.style.cursor = ''; mostrarDica(); });
+  // clicar numa região vai até ela; tocar num bairro (no celular, sem hover) abre a dica dele, tocar fora fecha
+  palco.addEventListener('click', ev => {
+    const h = !ev.target.closest('.trilha') && sob(ev);
+    if (h && h.tipo === 'regiao') irPara(h);
+    else { hover = h || null; mostrarDica(); }
+  });
+  addEventListener('keydown', ev => { if (ev.key === 'Escape' && lugar) irPara(null); });
+  gestos();
+  new ResizeObserver(medir).observe(palco);
+  montarTrilha(); medir();
+  escolher('tamanho');
+  requestAnimationFrame(quadro);
+});
+
+// o título do capítulo encolhe até a palavra mais longa ("Estrangeirismos") caber na coluna, sem quebrar a palavra
+function caber(el) {
+  el.style.fontSize = '';
+  let s = parseFloat(getComputedStyle(el).fontSize);
+  while (el.scrollWidth > el.clientWidth + 1 && s > 26) { s -= 2; el.style.fontSize = s + 'px'; }
+}
+function desenharPausa() {
+  const b = $('pausa'), rot = pausado ? 'Continuar' : 'Pausar';
+  b.innerHTML = (pausado ? ICONE.tocar : ICONE.pausar) + `<span>${rot}</span>`; b.setAttribute('aria-label', rot);
+}
+function alternarPausa() {
+  pausado = !pausado; desenharPausa();
+  clearTimeout(relogio); if (!pausado) proximo();
+}
+
+// ---------- lugares: a cidade ou uma das seis regiões (os bairros servem para contar, nomear e desenhar)
+const regiaoAtual = () => lugar ? lugar.nome : null;
+const bairrosDe = reg => Object.keys(L.bairros).filter(b => L.bairros[b][0] === reg);
+const REGIOES = () => D.regioes.map(r => r[2]);
+
+// contagens de um lugar: total de comércios e quantos de cada tipo
+function contagem(lg) {
+  const bs = !lg ? Object.keys(L.bairros) : lg.tipo === 'bairro' ? [lg.nome] : bairrosDe(lg.nome);
+  const out = { tot: 0, subs: new Array(D.subs.length).fill(0) };
+  for (const b of bs) { const v = L.bairros[b]; out.tot += v[1]; v[2].forEach((n, i) => out.subs[i] += n); }
+  return out;
+}
+// quanto o tipo pesa no lugar comparado à média da cidade; só vale com casos suficientes (o mesmo mínimo do ranking)
+function peso(c, s) {
+  const i = D.subs.indexOf(s), n = c.subs[i], minimo = L.cidade.subs[i] >= 150 ? 5 : 3;
+  return { n, mult: (n / c.tot) / (L.cidade.subs[i] / L.cidade.tot), confiavel: c.tot >= 150 && n >= minimo };
+}
+// bairros de uma região onde o tipo é mais distintivo
+function destaquesNaRegiao(reg, s) {
+  return bairrosDe(reg).map(b => [b, peso(contagem({ tipo: 'bairro', nome: b }), s)])
+    .filter(([, p]) => p.confiavel && p.mult >= 1).sort((a, b) => b[1].mult - a[1].mult).slice(0, 3);
+}
+
+function irPara(lg) {
+  lugar = lg; hover = null; palco.style.cursor = '';
+  anim = { de: { ...V }, para: vistaDe(lg), t0: performance.now() };
+  montarTrilha(); montarTabela(); recomecar(800);
+}
+// gestos que saltam entre os dois níveis, como o clique: a roda do mouse (ou a pinça do trackpad) e, no celular, a pinça.
+// Aproximar entra na região sob o cursor (ou entre os dedos); afastar volta para a cidade.
+function gestos() {
+  let ultimo = 0;
+  const saltar = (sentido, ev) => {
+    const agora = performance.now();
+    if (anim || agora - ultimo < 700) return;
+    if (sentido > 0 && !lugar) { const h = sob(ev); if (h) { ultimo = agora; irPara(h); } }
+    else if (sentido < 0 && lugar) { ultimo = agora; irPara(null); }
+  };
+  palco.addEventListener('wheel', ev => {
+    if (matchMedia('(max-width: 760px)').matches && !ev.ctrlKey) return;   // no celular a página rola: a roda só aproxima como pinça
+    ev.preventDefault();
+    if (Math.abs(ev.deltaY) >= 4) saltar(ev.deltaY < 0 ? 1 : -1, ev);
+  }, { passive: false });
+  const toques = new Map(); let d0 = 0;
+  const dist = () => { const [a, b] = [...toques.values()]; return Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY); };
+  palco.addEventListener('pointerdown', ev => { if (ev.pointerType === 'touch') { toques.set(ev.pointerId, ev); if (toques.size === 2) d0 = dist(); } });
+  palco.addEventListener('pointermove', ev => {
+    if (ev.pointerType !== 'touch' || !toques.has(ev.pointerId)) return;
+    toques.set(ev.pointerId, ev);
+    if (toques.size !== 2 || !d0) return;
+    const k = dist() / d0, [a, b] = [...toques.values()];
+    if (k > 1.3 || k < .77) { saltar(k > 1 ? 1 : -1, { clientX: (a.clientX + b.clientX) / 2, clientY: (a.clientY + b.clientY) / 2 }); d0 = 0; }
+  });
+  for (const t of ['pointerup', 'pointercancel']) palco.addEventListener(t, ev => { toques.delete(ev.pointerId); if (toques.size < 2) d0 = 0; });
+}
+// a vista de cada nível: a cidade inteira ou a região. A região é enquadrada pelo seu miolo (os blocos de quadradinhos
+// que juntam o grosso do comércio; ilhas soltas como Paquetá ficam de fora) e numa caixa de tamanho mínimo,
+// para que as regiões pequenas não cheguem perto demais e todas fiquem numa escala parecida
+const CAIXA_MIN = [24, 15];
+function vistaDe(lg) {
+  if (!lg) return { ...D.vCidade };
+  const cs = miolo(D.celsRegiao[lg.nome]);
+  const x0 = Math.min(...cs.map(c => c[0])), x1 = Math.max(...cs.map(c => c[0])) + 1;
+  const y0 = Math.min(...cs.map(c => c[1])), y1 = Math.max(...cs.map(c => c[1])) + 1;
+  const w = Math.max(x1 - x0 + 2, CAIXA_MIN[0]), h = Math.max(y1 - y0 + 2, CAIXA_MIN[1]), cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+  return { x0: cx - w / 2, y0: cy - h / 2, x1: cx + w / 2, y1: cy + h / 2 };
+}
+// os blocos de quadradinhos encostados (inclusive na diagonal) que têm ao menos 8% do comércio da região, ou o maior deles
+function miolo(cels) {
+  const em = new Map(cels.map(c => [c[0] + ',' + c[1], c])), visto = new Set(), blocos = [];
+  for (const c of cels) {
+    const k0 = c[0] + ',' + c[1]; if (visto.has(k0)) continue;
+    const bloco = [], pilha = [c]; visto.add(k0);
+    while (pilha.length) {
+      const a = pilha.pop(); bloco.push(a);
+      for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) {
+        const k = (a[0] + dx) + ',' + (a[1] + dy), b = em.get(k);
+        if (b && !visto.has(k)) { visto.add(k); pilha.push(b); }
+      }
+    }
+    blocos.push([bloco, bloco.reduce((s, x) => s + x[2], 0)]);
+  }
+  const tot = blocos.reduce((s, b) => s + b[1], 0);
+  blocos.sort((a, b) => b[1] - a[1]);
+  return blocos.filter((b, i) => i === 0 || b[1] >= tot * .08).flatMap(b => b[0]);
+}
+
+function montarTrilha() {
+  const t = $('trilha');
+  if (!lugar) {
+    t.innerHTML = `<span class="dica">Chegue mais perto:</span>` + REGIOES().map(r => `<button data-r="${e(r)}">${e(r)}</button>`).join('');
+    for (const b of t.querySelectorAll('button')) b.onclick = () => irPara({ tipo: 'regiao', nome: b.dataset.r });
+  } else {
+    t.innerHTML = `<button class="volta">← Rio inteiro</button><b>${e(lugar.nome)}</b>`;
+    t.querySelector('.volta').onclick = () => irPara(null);
+  }
+}
+
+// o que está sob o cursor, pelo quadradinho: na cidade, a região; numa região, o bairro que mais pesa ali
+// (só para dizer o nome) ou outra região (para ir até ela)
+function sob(ev) {
+  if (!D || anim) return null;
+  const r = palco.getBoundingClientRect(), gx = (ev.clientX - r.left - ox) / T + V.x0, gy = (ev.clientY - r.top - oy) / T + V.y0;
+  const c = celMap.get(Math.floor(gx) + ',' + Math.floor(gy));
+  if (!c || !c.regiao) return null;
+  if (!lugar || c.regiao !== regiaoAtual()) return { tipo: 'regiao', nome: c.regiao };
+  return { tipo: 'bairro', nome: c.bairro };
+}
+
+// ---------- capítulo, tipos e o que a coluna diz
+// a ordem dos nomes: alterna entre os grupos (avó, tio, mãe…); na cidade, o tamanho vem em pares e as frases em conversa;
+// numa região, primeiro os nomes curados que caem ali, depois nomes reais da região (os bairros com mais casos primeiro)
+function montarFila() {
+  if (!lugar) {
+    const grupos = D.sequencias[cap].map(g => g[1].filter(it => !foco || it[4] === foco)).filter(g => g.length);
+    if (cap === 'tamanho' || cap === 'frases') return grupos.flat();
+    return intercalar(grupos);
+  }
+  const ali = b => L.bairros[b] && L.bairros[b][0] === lugar.nome;
+  return intercalar((foco ? [foco] : D.conceitos[cap]).map(s => {
+    const i = D.subs.indexOf(s);
+    const curados = D.sequencias[cap].flatMap(g => g[1]).filter(it => it[4] === s && ali(it[3]));
+    const visto = new Set(curados.map(it => norm(it[2]))), doLugar = [];
+    const bs = Object.keys(L.nomes[s] || {}).filter(ali).sort((a, b) => L.bairros[b][2][i] - L.bairros[a][2][i]);
+    for (let k = 0; k < 6; k++) for (const b of bs) {
+      const n = L.nomes[s][b][k];
+      if (n && !visto.has(norm(n[0]))) { visto.add(norm(n[0])); doLugar.push([n[1], n[2], n[0], b, s, n[3]]); }
+    }
+    return curados.concat(doLugar).slice(0, 16);
+  }).filter(g => g.length));
+}
+function intercalar(grupos) {
+  const f = [];
+  for (let i = 0; grupos.some(g => i < g.length); i++) for (const g of grupos) if (g[i]) f.push(g[i]);
+  return f;
+}
+
+function escolher(c) {
+  cap = c;
+  for (const b of document.querySelectorAll('#capitulos button')) { b.setAttribute('aria-pressed', b.dataset.c === c); b.querySelector('small').textContent = ''; }
+  $('capNum').textContent = '0' + (ORDEM.indexOf(c) + 1);
+  $('capNome').textContent = CAP[c].nome; caber($('capNome'));
+  $('lema').textContent = CAP[c].lema;
+  foco = null;
+  montarTabela(); recomecar(450);
+}
+
+// os tipos do capítulo como legenda e filtro, sem números (a classificação é por regras e tem erros);
+// a ordem é a da cidade, do mais comum ao menos comum, e não muda de região para região
+function montarTabela() {
+  const subs = D.conceitos[cap].slice().sort((a, b) => D.ranking[b].total - D.ranking[a].total);
+  $('legenda').replaceChildren(...subs.map(s => {
+    const b = document.createElement('button'); b.dataset.s = s;
+    b.innerHTML = `<i style="background:${COR[s]}"></i><span class="nome">${TIPO[s]}</span>`;
+    b.onclick = () => focar(foco === s ? null : s);
+    return b;
+  }));
+  aplicarFoco();
+}
+
+// foco num tipo: o mapa mostra só ele, os nomes alternam só entre os dele, e a coluna diz onde ele é mais distintivo
+function focar(s) {
+  foco = D.conceitos[cap].length > 1 ? s : null;
+  aplicarFoco(); recomecar(450);
+}
+function aplicarFoco() {
+  const leg = $('legenda');
+  leg.classList.toggle('foco', !!foco);
+  for (const b of leg.children) {
+    const on = b.dataset.s === foco;
+    b.setAttribute('aria-pressed', on); b.style.background = on ? mix(COR[foco], CSS.papel, .2) : '';
+  }
+  // a escala da leitura, na cor do tipo filtrado (ou do mais comum): do mais fraco ao mais forte
+  const cor = COR[foco || leg.firstChild.dataset.s];
+  $('escala').innerHTML = [.25, .5, .75, 1].map(t => `<i style="background:${mix(cor, CSS.ladrilho, t)}"></i>`).join('');
+}
+const alvoAtual = () => foco || (D.conceitos[cap].length === 1 ? D.conceitos[cap][0] : null);
+// o quanto um tipo se destaca num lugar, em palavras; nada quando há poucos casos ou está perto da média
+function quanto(p) {
+  if (!p.confiavel || p.mult < 1.15) return null;
+  return p.mult >= 2.5 ? 'muito mais comum' : p.mult >= 1.6 ? 'bem mais comum' : 'um pouco mais comum';
+}
+const lista = ns => ns.length > 1 ? ns.slice(0, -1).join(', ') + ' e ' + ns[ns.length - 1] : ns[0];
+const DICA = 'Passe o mouse (ou toque) num bairro para ver exemplos.';
+
+// a coluna fala em palavras: onde o tipo se concentra e o que se destaca na região, sem multiplicadores
+function montarOnde() {
+  const alvo = alvoAtual(), onde = $('onde');
+  let h = '';
+  if (!lugar) {
+    // sem filtro, a legenda ("toque para filtrar") e a trilha ("chegue mais perto") já dizem o que fazer
+    h = alvo ? `<p>“${TIPO[alvo]}” se concentra mais em ${lista(D.ranking[alvo].bairros.slice(0, 3).map(b => `<strong>${e(b[0])}</strong>`))}.</p>` : '';
+  } else {
+    const c = contagem(lugar), reg = regiaoAtual(), aqui = (reg === 'Centro' ? 'No ' : 'Na ') + e(reg);
+    if (alvo) {
+      const q = quanto(peso(c, alvo)), ds = destaquesNaRegiao(reg, alvo).filter(([, p]) => quanto(p));
+      h = `<p>${aqui}, “${TIPO[alvo]}” é ${q ? `<strong>${q}</strong> que no resto da cidade` : 'perto da média da cidade, ou tem poucos casos'}.`
+        + (ds.length ? ` Mais concentrado em ${lista(ds.map(([b]) => `<strong>${e(b)}</strong>`))}.` : '') + `</p><p class="como">${DICA}</p>`;
+    } else {
+      const ps = D.conceitos[cap].map(s => [s, quanto(peso(c, s)), peso(c, s).mult]).filter(x => x[1]).sort((a, b) => b[2] - a[2]);
+      h = (ps.length ? `<p>${aqui}, o que mais se destaca é “${TIPO[ps[0][0]]}”: <strong>${ps[0][1]}</strong> que no resto da cidade.</p>`
+        : `<p>${aqui}, nenhum tipo deste capítulo se destaca bem acima do resto da cidade.</p>`) + `<p class="como">${DICA}</p>`;
+    }
+    if (!fila.length) h += '<p>Nenhum letreiro deste tipo por aqui.</p>';
+  }
+  onde.innerHTML = h;
+}
+
+// a dica do bairro sob o cursor (ou tocado): o tipo que mais se destaca ali, em palavras, e até dois letreiros de exemplo
+const titulo = s => s.toLowerCase().replace(/(^|\s)(\S)/g, (m, a, l) => a + l.toUpperCase()).replace(/ (De|Da|Do|Das|Dos|E|Di|D) /g, w => w.toLowerCase());
+function exemplos(b, s, k) {               // [nome, tipo do comércio]
+  const curados = D.sequencias[cap].flatMap(g => g[1]).filter(it => it[3] === b && it[4] === s).map(it => [it[2], it[5]]);
+  const visto = new Set(), out = [];
+  for (const [n, t] of curados.concat(((L.nomes[s] || {})[b] || []).map(x => [titulo(x[0]), x[3]]))) {
+    if (!visto.has(norm(n)) && out.length < k) { visto.add(norm(n)); out.push([n, t]); }
+  }
+  return out;
+}
+function mostrarDica() {
+  const d = $('balao');
+  if (!hover || hover.tipo !== 'bairro' || anim || !D.celsBairro[hover.nome]) { d.hidden = true; return; }
+  const b = hover.nome, c = contagem({ tipo: 'bairro', nome: b });
+  const ps = (foco ? [foco] : D.conceitos[cap]).map(s => { const p = peso(c, s); return { s, p, q: quanto(p) }; })
+    .sort((x, y) => (y.q ? y.p.mult : 0) - (x.q ? x.p.mult : 0) || y.p.n - x.p.n);
+  const top = ps[0], s = top.q || foco ? top.s : (ps.find(x => exemplos(b, x.s, 1).length) || top).s, ex = exemplos(b, s, 2);
+  const linha = top.q ? `<span><i style="background:${COR[top.s]}"></i>“${TIPO[top.s]}”: ${top.q} que no resto da cidade</span>`
+    : `<span>${foco ? `“${TIPO[foco]}”: perto da média, ou poucos casos` : 'Nada deste capítulo se destaca aqui'}</span>`;
+  d.innerHTML = `<b>${e(b)}</b>${linha}${ex.length ? `<em>ex.: ${ex.map(([n, t]) => e(n) + (t ? ` (${e(t)})` : '')).join(', ')}</em>` : ''}`;
+  // em cima dos quadradinhos do bairro; perto do topo do palco, embaixo deles
+  const cs = D.celsBairro[b], xs = cs.map(q => q[0]), ys = cs.map(q => q[1]);
+  const X = ox + ((Math.min(...xs) + Math.max(...xs) + 1) / 2 - V.x0) * T, Y0 = oy + (Math.min(...ys) - V.y0) * T, Y1 = oy + (Math.max(...ys) + 1 - V.y0) * T;
+  const embaixo = Y0 < 150;
+  d.style.left = clamp(X, 150, W - 150) + 'px'; d.style.top = (embaixo ? Y1 + 12 : Y0 - 12) + 'px';
+  d.style.transform = embaixo ? 'translate(-50%, 0)' : '';
+  d.hidden = false;
+}
+
+function recomecar(atraso) {
+  limpar(); fila = montarFila(); passo = 0;
+  montarOnde(); desenharBase(); mostrarDica();
+  clearTimeout(relogio); if (!pausado) relogio = setTimeout(proximo, atraso);
+}
+
+// ---------- nomes ocupando território: cada um no papel livre mais perto de onde nasceu, empurrado para fora do mapa
+const MAXIMO = 3;   // no máximo três nomes na tela, todos inteiros
+const livre = (x0, y0, x1, y1) => x0 >= 12 && y0 >= 12 && x1 <= W - 12 && y1 <= H - 12 &&
+  !fixo.some(r => x0 < r[2] && x1 > r[0] && y0 < r[3] && y1 > r[1]) &&
+  !rotulos.concat(saindo).some(({ r }) => x0 < r[2] + 14 && x1 > r[0] - 14 && y0 < r[3] + 10 && y1 > r[1] - 10);   // nem sobre os que ainda estão sumindo
+
+function lugarPara(px, py, w, h) {
+  const ang0 = Math.atan2(py - (oy + (V.y1 - V.y0) * T / 2), px - (ox + (V.x1 - V.x0) * T / 2));
+  for (let raio = 30; raio < Math.max(W, H); raio += 10)
+    for (let k = 0; k <= 12; k++) for (const sinal of k ? [1, -1] : [1]) {
+      const a = ang0 + sinal * k * Math.PI / 12, c = Math.cos(a), sn = Math.sin(a);
+      const qx = px + c * raio, qy = py + sn * raio;
+      const x = c > .3 ? qx : c < -.3 ? qx - w : qx - w / 2, y = sn > .3 ? qy : sn < -.3 ? qy - h : qy - h / 2;
+      if (livre(x, y, x + w, y + h)) return [x, y];
+    }
+  return null;
+}
+
+function proximo() {
+  if (!fila.length || anim) { if (anim && !pausado) relogio = setTimeout(proximo, 200); return; }
+  const [x, y, nome, bairro, sub, tipo] = fila[passo++ % fila.length];
+  const repetido = rotulos.findIndex(o => o.nome === nome);           // nome que volta na fila: tira a cópia antiga
+  if (repetido >= 0) tirar(rotulos.splice(repetido, 1)[0]);
+  const el = document.createElement('div');
+  el.className = 'rotulo' + (cap === 'frases' && !lugar ? ' conversa' : '') + (lugar ? ' sobre-mapa' : '');
+  el.style.setProperty('--marca', mix(COR[sub], CSS.papel, .55));
+  el.innerHTML = `<b><mark>${e(nome)}</mark></b><small>${e(bairro)}${tipo ? ' · ' + e(tipo) : ''}</small>`;   // o tipo do comércio (CNAE), quando não é genérico
+  el.style.visibility = 'hidden'; camada.append(el);
+  const w = Math.ceil(el.getBoundingClientRect().width), h = el.offsetHeight, px = tx(x), py = ty(y);
+  el.style.width = w + 'px';     // trava a largura medida: perto da borda o navegador quebraria a linha e o retângulo não bateria
+  let pos = lugarPara(px, py, w, h);
+  while (!pos && rotulos.length) { tirar(rotulos.pop()); pos = lugarPara(px, py, w, h); }   // sem espaço: some o mais antigo
+  if (!pos) { for (const s of saindo) s.el.remove(); saindo = []; pos = lugarPara(px, py, w, h); }   // ainda sem lugar: limpa os que estão sumindo
+  pos = pos || [clamp(px + 12, 8, W - w - 8), clamp(py - h - 12, 8, H - h - 8)];
+  el.style.left = pos[0] + 'px'; el.style.top = pos[1] + 'px'; el.style.visibility = '';
+  rotulos.unshift({ el, x, y, sub, nome, t0: performance.now(), r: [pos[0], pos[1], pos[0] + w, pos[1] + h] });
+  while (rotulos.length > MAXIMO) tirar(rotulos.pop());
+  const ativo = document.querySelector('#capitulos button[aria-pressed="true"] small');
+  if (ativo) ativo.textContent = `Nº ${String((passo - 1) % fila.length + 1).padStart(2, '0')} / ${fila.length}`;
+  if (!pausado) relogio = setTimeout(proximo, cap === 'frases' ? 2300 : 2700);
+}
+function tirar(o) { o.el.style.opacity = 0; saindo.push(o); setTimeout(() => { o.el.remove(); saindo = saindo.filter(s => s !== o); }, 600); }
+function limpar() { for (const o of rotulos.concat(saindo)) o.el.remove(); rotulos = []; saindo = []; }
+
+// ---------- o mapa em quadradinhos: cor = tipo que mais pesa ali, comparado à média da cidade
+// o mapa fica no meio do palco, menor que ele, deixando papel em volta para os nomes; numa região, ela enche o palco
+function medir() {
+  if (!D) return;
+  const r = palco.getBoundingClientRect();
+  dpr = window.devicePixelRatio || 1; W = r.width; H = r.height;
+  for (const c of [tela, base]) { c.width = Math.round(W * dpr); c.height = Math.round(H * dpr); }
+  enquadrar(); limpar(); desenharBase();
+}
+function enquadrar() {
+  // numa região, mais papel em volta: os nomes precisam de lugar fora do mapa aproximado
+  const estreito = W < 700, perto = !!lugar, w = V.x1 - V.x0, h = V.y1 - V.y0;
+  const mx = W * (estreito ? (perto ? .05 : .02) : (perto ? .15 : .1)), my = H * (estreito ? (perto ? .24 : .2) : (perto ? .22 : .19));
+  T = Math.min((W - mx * 2) / w, (H - my * 2) / h, estreito ? 12 : 20);
+  if (!anim) T = Math.max(3, Math.floor(T));
+  ox = Math.round((W - w * T) / 2); oy = Math.round((H - h * T) / 2);
+}
+const tx = x => ox + (x / D.grade_m - V.x0) * T, ty = y => oy + (y / D.grade_m - V.y0) * T;
+// as casas de um grupo mais os buracos que ele cerca (vãos sem comércio no meio da região não ganham contorno próprio)
+const CHEIO = new WeakMap();
+function cheio(cels) {
+  if (CHEIO.has(cels)) return CHEIO.get(cels);
+  const tem = new Set(cels.map(c => c[0] + ',' + c[1]));
+  const xs = cels.map(c => c[0]), ys = cels.map(c => c[1]);
+  const x0 = Math.min(...xs) - 1, x1 = Math.max(...xs) + 1, y0 = Math.min(...ys) - 1, y1 = Math.max(...ys) + 1;
+  const fora = new Set([x0 + ',' + y0]), pilha = [[x0, y0]];   // o que se alcança por fora, sem atravessar o grupo
+  while (pilha.length) {
+    const [x, y] = pilha.pop();
+    for (const [a, b] of [[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]]) {
+      const k = a + ',' + b;
+      if (a < x0 || a > x1 || b < y0 || b > y1 || fora.has(k) || tem.has(k)) continue;
+      fora.add(k); pilha.push([a, b]);
+    }
+  }
+  const out = new Set();
+  for (let x = x0; x <= x1; x++) for (let y = y0; y <= y1; y++) if (!fora.has(x + ',' + y)) out.add(x + ',' + y);
+  CHEIO.set(cels, out);
+  return out;
+}
+// contorno em degraus, na língua do mapa: as bordas dos quadradinhos de um grupo que não encostam noutro do mesmo grupo,
+// passando no meio do vão entre eles
+function degraus(g, cels) {
+  const tem = cheio(cels), vao = (T >= 8 ? Math.round(T * .2) : 1) / 2;
+  for (const k of tem) {
+    const [cx, cy] = k.split(',').map(Number);
+    const x0 = ox + (cx - V.x0) * T - vao, y0 = oy + (cy - V.y0) * T - vao, x1 = x0 + T, y1 = y0 + T;
+    if (!tem.has(cx + ',' + (cy - 1))) { g.moveTo(x0, y0); g.lineTo(x1, y0); }
+    if (!tem.has(cx + ',' + (cy + 1))) { g.moveTo(x0, y1); g.lineTo(x1, y1); }
+    if (!tem.has((cx - 1) + ',' + cy)) { g.moveTo(x0, y0); g.lineTo(x0, y1); }
+    if (!tem.has((cx + 1) + ',' + cy)) { g.moveTo(x1, y0); g.lineTo(x1, y1); }
+  }
+}
+
+function desenharBase() {
+  if (!D || !T || !cap) return;
+  bctx.setTransform(dpr, 0, 0, dpr, 0, 0); bctx.clearRect(0, 0, W, H);
+  const g = T >= 8 ? Math.round(T * .2) : 1, reg = regiaoAtual();
+  fixo = []; const textos = [];   // textos: o que já foi escrito sobre o mapa, para as etiquetas não se sobreporem
+  const pr = palco.getBoundingClientRect(), tr = $('trilha').getBoundingClientRect();
+  fixo.push([tr.left - pr.left - 8, tr.top - pr.top - 8, tr.right - pr.left + 8, tr.bottom - pr.top + 8]);
+  // respiro: os nomes ficam a pelo menos RESPIRO px de qualquer quadradinho do lugar (fora dele o mapa fica apagado e pode ser coberto)
+  const RESPIRO = W < 700 ? 10 : 24;
+  for (const c of D.grade) {
+    const s = c.suave, n = s[0]; let melhor = null, mi = 0;
+    for (const sub of foco ? [foco] : D.conceitos[cap]) {
+      const i = D.subs.indexOf(sub), cv = s[1 + i], idx = (cv / n) / D.taxa[i];
+      if (cv >= (D.taxa[i] < .003 ? 1 : 2) && idx > mi) { mi = idx; melhor = sub; }
+    }
+    const X = ox + (c[0] - V.x0) * T, Y = oy + (c[1] - V.y0) * T;
+    if (X > W || Y > H || X + T < 0 || Y + T < 0) continue;
+    const fora = reg && c.regiao !== reg;
+    bctx.globalAlpha = fora ? .22 : 1;
+    bctx.fillStyle = melhor && mi >= 1.2 ? mix(COR[melhor], CSS.ladrilho, .25 + .75 * clamp((mi - 1.2) / 2.3, 0, 1))
+      : c[2] < 4 ? CSS['ladrilho-raro'] : CSS.ladrilho;
+    bctx.fillRect(X, Y, T - g, T - g);
+    if (!fora) fixo.push([X - RESPIRO, Y - RESPIRO, X + T + RESPIRO, Y + T + RESPIRO]);
+  }
+  bctx.globalAlpha = 1;
+  if (!lugar && W >= 700) {
+    bctx.font = `600 ${clamp(T * 1.15, 10, 11)}px "Bricolage Grotesque", sans-serif`; bctx.textAlign = 'center'; bctx.textBaseline = 'middle';
+    for (const [x, y, nome] of D.regioes) {
+      const t = nome.toUpperCase().split('').join(' '), w = bctx.measureText(t).width + 12, X = tx(x), Y = ty(y) - T * 2.4;
+      bctx.fillStyle = CSS.papel; bctx.fillRect(X - w / 2, Y - 8, w, 16); fixo.push([X - w / 2, Y - 8, X + w / 2, Y + 8]); textos.push([X - w / 2, Y - 8, X + w / 2, Y + 8]);
+      bctx.fillStyle = CSS['tinta-2']; bctx.fillText(t, X, Y + .5);
+    }
+  }
+  // etiquetas em tinta: os bairros onde o tipo é mais distintivo (na cidade ou na região)
+  const alvo = alvoAtual();
+  const marcas = !alvo ? [] : !lugar ? D.ranking[alvo].bairros.slice(0, 3).map(b => b[0]) : destaquesNaRegiao(reg, alvo).map(d => d[0]);
+  const fs = W < 700 ? 10 : 12;
+  bctx.font = `700 ${fs}px "Bricolage Grotesque", sans-serif`; bctx.textAlign = 'left'; bctx.textBaseline = 'middle';
+  for (const b of marcas) {
+    const c = D.centros[b]; if (!c) continue;
+    const X = tx(c[0]), Y = ty(c[1]), w = bctx.measureText(b).width + 10, hh = fs + 6;
+    // a etiqueta vai à direita do ponto; se bater num nome de região ou noutra etiqueta, tenta a esquerda, acima e abaixo
+    const bate = (a, b0, a1, b1) => textos.some(r => a < r[2] && a1 > r[0] && b0 < r[3] && b1 > r[1]);
+    const opcoes = [[X + 8, Y - hh / 2], [X - 8 - w, Y - hh / 2], [X - w / 2, Y - 9 - hh], [X - w / 2, Y + 9]];
+    const [lx, ly] = opcoes.find(([a, b0]) => !bate(a, b0, a + w, b0 + hh)) || opcoes[0];
+    bctx.fillStyle = CSS.papel; bctx.beginPath(); bctx.arc(X, Y, 6, 0, 6.2832); bctx.fill();
+    bctx.fillStyle = CSS.tinta; bctx.beginPath(); bctx.arc(X, Y, 4, 0, 6.2832); bctx.fill();
+    bctx.fillRect(lx, ly, w, hh); fixo.push([lx, ly, lx + w, ly + hh]); textos.push([lx - 4, ly - 2, lx + w + 4, ly + hh + 2]);
+    bctx.fillStyle = CSS.papel; bctx.fillText(b, lx + 5, ly + hh / 2 + .5);
+  }
+}
+
+// a cada quadro: a aproximação (quando há), o mapa, o destaque do que está sob o cursor e, enquanto o nome chega,
+// a chamada: uma linha reta da fachada até o ponto mais perto do nome; depois some
+const LINHA = 1900, sai = k => 1 - Math.pow(1 - k, 3);
+function chamada(o) {
+  const px = tx(o.x), py = ty(o.y), [x0, y0, x1, y1] = o.r;
+  return [[px, py], [clamp(px, x0 - 6, x1 + 6), clamp(py, y0 - 6, y1 + 6)]];
+}
+function tracar(pts, k) {                      // desenha a fração k do comprimento da linha
+  const seg = pts.slice(1).map((p, i) => Math.hypot(p[0] - pts[i][0], p[1] - pts[i][1]));
+  let resta = k * seg.reduce((a, b) => a + b, 0);
+  ctx.beginPath(); ctx.moveTo(...pts[0]);
+  for (let i = 0; i < seg.length && resta > 0; i++) {
+    const t = seg[i] ? Math.min(1, resta / seg[i]) : 1, [a, b] = [pts[i], pts[i + 1]];
+    ctx.lineTo(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t); resta -= seg[i];
+  }
+  ctx.stroke();
+}
+function ponto(x, y, a) {
+  ctx.globalAlpha = a;
+  ctx.fillStyle = CSS.papel; ctx.beginPath(); ctx.arc(x, y, T < 6 ? 4 : 5.5, 0, 6.2832); ctx.fill();
+  ctx.fillStyle = CSS.tinta; ctx.beginPath(); ctx.arc(x, y, T < 6 ? 2.5 : 3.5, 0, 6.2832); ctx.fill();
+  ctx.globalAlpha = 1;
+}
+function etiqueta(texto, X, Y) {               // pílula em tinta centrada em (X, Y), para o que está sob o cursor
+  ctx.font = '700 13px "Bricolage Grotesque", sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  const w = ctx.measureText(texto).width + 16;
+  ctx.fillStyle = CSS.tinta; ctx.fillRect(X - w / 2, Y - 11, w, 22);
+  ctx.fillStyle = CSS.papel; ctx.fillText(texto, X, Y + .5);
+}
+function quadro(t) {
+  if (D && W) {
+    if (anim) {
+      const k = sai(clamp((t - anim.t0) / 650, 0, 1));
+      for (const q of ['x0', 'y0', 'x1', 'y1']) V[q] = anim.de[q] + (anim.para[q] - anim.de[q]) * k;
+      if (k === 1) anim = null;
+      enquadrar(); desenharBase();
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+    ctx.drawImage(base, 0, 0, W, H);
+    if (hover && !anim) {
+      ctx.strokeStyle = CSS.tinta; ctx.lineCap = 'square';
+      const g = T >= 8 ? Math.round(T * .2) : 1;
+      if (hover.tipo === 'regiao') {
+        if (!lugar) {                            // na cidade: o resto do mapa recua e a região ganha contorno em degraus
+          ctx.fillStyle = CSS.papel; ctx.globalAlpha = .62;
+          for (const c of D.grade) if (c.regiao !== hover.nome) ctx.fillRect(ox + (c[0] - V.x0) * T, oy + (c[1] - V.y0) * T, T - g, T - g);
+          ctx.globalAlpha = 1;
+        }
+        ctx.lineWidth = lugar ? 1 : 1.5; ctx.beginPath(); degraus(ctx, D.celsRegiao[hover.nome]); ctx.stroke();
+        const r = D.regioes.find(r => r[2] === hover.nome);
+        if (r) etiqueta(lugar ? hover.nome + ' →' : hover.nome + ' · chegar perto', tx(r[0]), ty(r[1]) - T * 2.4);
+      } else {                                   // na região, o bairro ganha contorno; o que ele diz vai na dica (mostrarDica)
+        ctx.lineWidth = 1.5; ctx.beginPath(); degraus(ctx, D.celsBairro[hover.nome] || []); ctx.stroke();
+      }
+      ctx.lineCap = 'butt';
+    }
+    const o = rotulos[0];
+    if (o && o.el.isConnected && t - o.t0 < LINHA && !anim) {
+      const idade = t - o.t0;
+      ctx.globalAlpha = 1 - clamp((idade - 1400) / (LINHA - 1400), 0, 1);
+      ctx.strokeStyle = CSS.tinta; ctx.lineWidth = 1.25; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+      tracar(chamada(o), sai(clamp(idade / 600, 0, 1)));
+      ponto(tx(o.x), ty(o.y), ctx.globalAlpha * clamp(idade / 150, 0, 1));   // uma linha e um ponto por vez: somem juntos
+      ctx.globalAlpha = 1;
+    }
+  }
+  requestAnimationFrame(quadro);
+}
+document.fonts && document.fonts.ready.then(() => { if (D) { desenharBase(); caber($('capNome')); } });
+addEventListener('resize', () => D && caber($('capNome')));
+</script>

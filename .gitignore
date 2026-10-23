@@ -1,0 +1,10 @@
+# dados baixados e intermediários: grandes demais para o git, e refeitos pelo pipeline
+dados/brutos/*
+dados/intermediarios/*
+!dados/brutos/.gitkeep
+!dados/intermediarios/.gitkeep
+
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
