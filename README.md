@@ -55,6 +55,10 @@ Sem o Python do BigQuery, dá para rodar `pipeline/01_cnpj_rio.sql` no console d
 
 `dados/` fica fora do git (os arquivos passam de 100 MB). O site em `docs/` é uma versão estática, publicada pelo GitHub Pages.
 
+**Baixar de novo não dá exatamente o mesmo site.** A versão de `docs/` foi feita com o extrato de CNPJ de 21/10/2026 e com cópias antigas dos mapas da Prefeitura; com esses arquivos, os passos 03 a 05 reproduzem `docs/` byte a byte. Com os mapas baixados hoje pelo passo 02, o resultado muda pouco (50.564 comércios no mapa em vez de 50.584; os bairros de destaque continuam os mesmos), por duas razões:
+- o servidor tem 65 trechos de rua a mais que a cópia antiga;
+- a camada de bairros do servidor não tem Argentino nem Ingleses e junta Imperial de São Cristóvão em São Cristóvão, enquanto o cadastro de logradouros usa os nomes novos. Vale tratar isso (como em `GRAFIA`, no `05_exporta.py`) antes de republicar.
+
 ## Estrutura
 
 ```
