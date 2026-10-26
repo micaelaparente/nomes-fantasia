@@ -175,7 +175,7 @@ h2 { margin: 0; font: 800 clamp(36px, 3.4vw, 52px)/.9 var(--texto); font-stretch
       <div>
         <p>Um atlas inusitado do Rio: fé, família, sotaques e frases feitas, lidos no letreiro do comércio de bairro.</p>
         <p>No mapa, a cor mais forte marca onde o tipo de nome é mais comum que na média da cidade; toque num tipo para ver só ele, ou numa região para chegar mais perto (a roda do mouse e a pinça também aproximam). As regiões são as Áreas de Planejamento da Prefeitura, com a Grande Tijuca separada da Zona Sul. Os números comparam nomes, não pessoas: mostram como o comércio se batiza, não quem mora em cada lugar.</p>
-        <p>50 mil comércios de bairro ativos (CNPJ, Receita Federal): pequenos negócios com fachada para a rua, fora redes, franquias, bancos e shoppings. Os nomes foram classificados por regras de linguagem, e o tipo de cada comércio é a atividade declarada à Receita (CNAE), não necessariamente o que vende hoje; há erros.</p>
+        <p>52 mil comércios de bairro ativos (CNPJ, Receita Federal): pequenos negócios com fachada para a rua, fora redes, franquias, bancos e shoppings. Os nomes foram classificados por regras de linguagem, e o tipo de cada comércio é a atividade declarada à Receita (CNAE), não necessariamente o que vende hoje; há erros.</p>
       </div>
     </details>
   </header>
@@ -497,7 +497,8 @@ function montarOnde() {
   let h = '';
   if (!lugar) {
     // sem filtro, a legenda ("toque para filtrar") e a trilha ("chegue mais perto") já dizem o que fazer
-    h = alvo ? `<p>“${TIPO[alvo]}” se concentra mais em ${lista(D.ranking[alvo].bairros.slice(0, 3).map(b => `<strong>${e(b[0])}</strong>`))}.</p>` : '';
+    // tipos pequenos podem não ter bairro com casos suficientes para o ranking: aí não se diz nada
+    h = alvo && D.ranking[alvo].bairros.length ? `<p>“${TIPO[alvo]}” se concentra mais em ${lista(D.ranking[alvo].bairros.slice(0, 3).map(b => `<strong>${e(b[0])}</strong>`))}.</p>` : '';
   } else {
     const c = contagem(lugar), reg = regiaoAtual(), aqui = (reg === 'Centro' ? 'No ' : 'Na ') + e(reg);
     if (alvo) {

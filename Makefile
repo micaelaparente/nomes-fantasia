@@ -5,25 +5,38 @@
 PY ?= python3
 B = dados/brutos
 I = dados/intermediarios
+P = pipeline
 
 .PHONY: baixar site servir
 
 baixar: $(B)/cnpj_rio.csv $(B)/trechos.json
 
-$(B)/cnpj_rio.csv: pipeline/01_cnpj_rio.sql
-	$(PY) pipeline/01_baixa_cnpj.py --projeto $(PROJETO)
+$(B)/cnpj_rio.csv: $(P)/cnpj_rio.sql
+	$(PY) $(P)/baixa_cnpj.py --projeto $(PROJETO)
 
 $(B)/trechos.json $(B)/logradouros.csv $(B)/bairros.geojson:
-	$(PY) pipeline/02_baixa_datario.py
+	$(PY) $(P)/baixa_datario.py
 
-$(I)/comercios_rua.csv: $(B)/cnpj_rio.csv pipeline/03_comercio_rua.py
-	$(PY) pipeline/03_comercio_rua.py
+$(I)/universo.csv: $(B)/cnpj_rio.csv $(P)/01_universo.py
+	$(PY) $(P)/01_universo.py
 
-$(I)/cnpj_geo.csv: $(B)/cnpj_rio.csv $(B)/trechos.json $(B)/logradouros.csv pipeline/04_geocodifica.py
-	$(PY) pipeline/04_geocodifica.py
+$(I)/atividade.csv: $(I)/universo.csv $(P)/02_atividade.py
+	$(PY) $(P)/02_atividade.py
 
-site: $(I)/comercios_rua.csv $(I)/cnpj_geo.csv $(B)/bairros.geojson
-	$(PY) pipeline/05_exporta.py
+$(I)/nomes.csv: $(I)/atividade.csv $(P)/03_nomes.py $(P)/pessoas.py
+	$(PY) $(P)/03_nomes.py
+
+$(I)/bairro.csv: $(I)/nomes.csv $(P)/04_bairro.py
+	$(PY) $(P)/04_bairro.py
+
+$(I)/categorias.csv: $(I)/bairro.csv $(P)/05_categorias.py $(P)/categorias.py
+	$(PY) $(P)/05_categorias.py
+
+$(I)/geo.csv: $(I)/categorias.csv $(B)/logradouros.csv $(B)/trechos.json $(B)/bairros.geojson $(P)/06_geocodifica.py
+	$(PY) $(P)/06_geocodifica.py
+
+site: $(I)/geo.csv $(P)/07_exporta.py $(P)/sequencias.py $(P)/cnae.py
+	$(PY) $(P)/07_exporta.py
 
 servir:
 	$(PY) -m http.server 8000 --directory docs

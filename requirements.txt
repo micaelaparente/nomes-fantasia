@@ -1,4 +1,4 @@
-# 03_comercio_rua.py
+# etapas 01 a 07 e perfil_cnpj.py
 pandas>=2.0
-# 01_baixa_cnpj.py (só se for baixar pelo Python; dá para rodar o SQL no console do BigQuery)
+# baixa_cnpj.py (só se for baixar pelo Python; dá para rodar o SQL no console do BigQuery)
 google-cloud-bigquery[pandas]>=3.0

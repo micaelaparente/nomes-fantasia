@@ -1,4 +1,4 @@
-"""Rótulos curtos, do jeito que se fala na rua, para os CNAEs do comércio de bairro (comercios_rua.csv).
+"""Rótulos curtos, do jeito que se fala na rua, para os CNAEs do comércio de bairro (etapa 2).
 
 O CNAE é a atividade principal declarada à Receita, não necessariamente o que a loja vende hoje.
 Códigos genéricos ("outros produtos não especificados") ficam sem rótulo: melhor não dizer do que inventar.
@@ -55,6 +55,9 @@ ROTULO = {
     '9603301': 'funerária', '9603302': 'funerária', '9603303': 'funerária', '9603304': 'funerária', '9603305': 'funerária',
     '9603399': 'funerária',
     '9609208': 'banho e tosa',
+    '1091101': 'padaria', '1053800': 'sorveteria', '1094500': 'massas', '5620104': 'marmitaria',
+    '9609206': 'tatuagem', '9609207': 'hotel para pet', '7723300': 'aluguel de roupas', '9329801': 'danceteria',
+    '9329804': 'lan house',
 }
 
 

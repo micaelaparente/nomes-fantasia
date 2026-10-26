@@ -4,7 +4,7 @@
   trecho de rua, e a geometria do trecho em lon/lat);
 - bairros.geojson: a camada Hosted/LimitedeBairroshosted (limite dos bairros, com área e região de planejamento).
 
-Uso: python pipeline/02_baixa_datario.py   (só biblioteca padrão; leva alguns minutos)
+Uso: python pipeline/baixa_datario.py   (só biblioteca padrão; leva alguns minutos)
 """
 import csv, json, time, urllib.parse, urllib.request
 from caminhos import LOGRADOUROS, TRECHOS, BAIRROS

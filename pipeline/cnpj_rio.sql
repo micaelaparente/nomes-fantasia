@@ -1,9 +1,7 @@
 -- CNPJs do município do Rio de Janeiro no retrato de janeiro de 2026 da Receita Federal, pela Base dos Dados
 -- (https://basedosdados.org, tabela br_me_cnpj.estabelecimentos): os ativos e os que fecharam a partir de 2021.
--- Os inativos ficam aqui de propósito; quem deixa só os ativos é o 03_comercio_rua.py (situação cadastral 2).
---
--- Esta é a consulta que gerou o extrato do site (out/2026). A única mudança é o filtro de município, que é pelo código
--- IBGE do Rio (3304557).
+-- Os fechados vêm junto; a etapa 01_universo.py fica só com os ativos (situação cadastral 2). O filtro de município é
+-- pelo código IBGE do Rio (3304557).
 --
 -- Colunas: cnpj, nome_fantasia, cnae (principal), cnaes_secundarios (separados por vírgula), situacao_cadastral
 -- (2 = ativa), inicio (abertura), fim (data em que deixou de estar ativa; vazio se ativa), logradouro (tipo + nome),

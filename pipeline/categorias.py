@@ -1,0 +1,266 @@
+"""Categorias dos nomes: regras e léxicos, um capítulo por vez (METODOLOGIA.md, etapa 5).
+
+A categoria descreve a forma do nome; se ele é inusitado é outra camada. Palavras que viraram o nome do tipo de loja
+(TIPO_DE_LOJA) não contam em nenhum capítulo. Uso:
+    from categorias import categorias
+    categorias('MERCADINHO DO ZEZINHO')  -> {'diminutivo'}
+"""
+import re
+
+from pessoas import norm
+
+
+def P(txt):
+    return set(txt.split())
+
+
+# os cinco capítulos do site e seus tipos, na ordem em que o site mostra (os nomes são os que o site lê)
+CONCEITOS = {
+    'tamanho': ['aumentativo', 'diminutivo'],
+    'frases': ['chamados', 'promessas', 'primeira', 'interjeicoes'],
+    'fe': ['catolico', 'evangelico', 'afro', 'cristao'],
+    'culturas': ['ingles', 'frances', 'imigracao', 'migracao'],
+    'familia': ['avos', 'pais', 'tios', 'irmaos', 'filhos', 'agregados'],
+}
+
+
+# o que a loja é ou vende, dito com a palavra de sempre: não é escolha de quem deu o nome
+TIPO_DE_LOJA = P('''MERCADINHO MERCADINHOS SUPERMERCADINHO ARMARINHO ARMARINHOS COXINHA COXINHAS QUENTINHA QUENTINHAS
+MARTELINHO ESPETINHO ESPETINHOS CHURRASQUINHO SALGADINHO SALGADINHOS EMPADINHA EMPADINHAS CASQUINHA CAIPIRINHA
+CAIPIRINHAS ESCONDIDINHO
+ATACADAO MERCADAO SACOLAO VAREJAO FEIRAO SALDAO
+SHOPPING DELIVERY OUTLET FITNESS FIT STUDIO STUDIOS BURGER BURGERS BURGUER GRILL PUB LOUNGE TATTOO TATOO STEAKHOUSE
+ONLINE MALL
+BOUTIQUE BISTRO BISTROT ATELIER SALON
+SUSHI TEMAKI TEMAKERIA YAKISOBA LAMEN RAMEN ESFIHA ESFIRRA KEBAB SHAWARMA TACO TACOS BURRITO CHURROS PAELLA
+PIZZERIA GELATERIA FORNERIA TRATTORIA CUCINA RISTORANTE PASTIFICIO OSTERIA ENOTECA PANETTERIA SALUMERIA IZAKAYA
+TASCA TASQUINHA HABIBS CANTONES TEQUILA SAPORE''')
+TIPO_DE_LOJA_EXPR = re.compile(r'\b(PET SHOP|SEX SHOP|FAST FOOD|FOOD TRUCK|SELF SERVICE|AUTO CENTER|LAN HOUSE)\b')
+
+# --- Tamanho ---------------------------------------------------------------------------------------------------------
+
+# palavras que só terminam em -inho/-inha: não são diminutivo (lugares e sobrenomes inclusive)
+NAO_DIMINUTIVO = P('''RAINHA RAINHAS MINHA MINHAS COZINHA COZINHAS VINHO VINHOS MARINHO MARINHA LINHA LINHAS LINHO LINHOS
+CAMINHO CAMINHOS FARINHA FARINHAS NINHO MOINHO SARDINHA VIZINHO VIZINHA CARINHO TINHA PINHO ESPINHO FOCINHO GALINHA
+GALINHAS PADRINHO MADRINHA MAINHA PAINHO CRISTINA ADIVINHO TOUCINHO BAINHA BAINHAS GOLFINHO GOLFINHOS MINHO RINHA
+CAMPAINHA LADAINHA CAPUCHINHOS MEIRINHO AQUAMARINHO SOBRINHO SOBRINHA
+VINHA VINHAS MDVINHOS SINHA SOZINHA SOZINHO
+COUTINHO GODINHO MOUZINHO MOUTINHO MARTINHO AGOSTINHO VILARINHO VILLARINHO
+ROCINHA MANGUINHOS MANGINHOS JACAREZINHO CAMPINHO PRAINHA MAGAZIN''')
+
+# aumentativos que aparecem nos nomes, revisados à mão (além de qualquer palavra em -ZÃO)
+AUMENTATIVO = P('''ATACADAO VAREJAO OFERTAO MERCADAO SACOLAO BARATAO CASARAO KASARAO AMIGAO LOJAO FEIRAO BONZAO FRUTAO
+BONITAO SALDAO CARLAO TERREIRAO DESCONTAO POVAO MORANGAO PAIZAO BIFAO ESCADAO AZULAO COSTELAO FAROFAO NEGAO RODRIGAO
+TONHAO TUDAO DOGAO BOLINAO TREMENDAO PONTAO CORUJAO CACHORRAO FORMIGAO RAPIDAO GORDAO SACARRAO PODRAO FORTAO MARRETAO
+GELADAO BATATAO CHEFAO FLUZAO FLAZAO XANDAO PINHEIRAO HAMBURGAO CARRETAO TATAO JANGADAO CANTINADAO LARANJAO SANDUBAO
+PETPIMPAO MIXTURADAO SPIGAO TIJOLAO PEDRAO SKINAO LAVADAO BICHAO PAVUNAO BODEGAO BABADAO MALVADAO VARANDAO DIGAO BETAO
+TIGRAO COMILAO VERGALHAO PRECAO PANELAO BOTECAO CHURRASCAO PASTELAO PICANHAO GALETAO CALCADAO MADEIRACO FERRACO TELACO
+MOVELACO MAIORACO ESPETACULACO MEDERACO FERROACO PRECACO MALVADONA KARRAO BALACOBACO
+GOSTOSAO SUSHIRAO CARIOCAO MARCAO BRUNAO VITAO FELIPAO CESARAO POLVAO LINDAO CASTELAO CARVALHAO BISCOITAO MINEIRAO
+GAROTAO AMARELAO FATIAO ESQUINAO ESKINAO SOBRADAO MADEIRAO MAGRAO PISCINAO PAREDAO ALZIRAO PEIXAO GALHAO VIZINHAO
+COCOTAO JUMBAO KIOSKAO BUTIKAO 10CONTAO MESQUITAO KEKAO VICENTAO FILHAO GATAO PESADAO PEDREIRAO MARTELAO IMPORTADAO
+BARRETAO COQUEIRAO MOTAO TINTAO GRANDAO RECHEADAO ESPETAO PAMPLONAO DUDAO TULIPAO ATAKADAO EMPADAO ENGENHAO SAMUCAO
+JUCAO THURCAO LOBAO''')
+NAO_AUMENTATIVO = P('CORAZAO RAZAO')
+
+DIMINUTIVO_RE = re.compile(r'(INHO|INHA|INHOS|INHAS|ZIN|ZIM|ZITO|ZITA)$')
+
+
+def tamanho(ws):
+    out = set()
+    if any(len(w) > 4 and DIMINUTIVO_RE.search(w) and w not in NAO_DIMINUTIVO for w in ws):
+        out.add('diminutivo')
+    if any(w in AUMENTATIVO or (len(w) > 5 and w.endswith('ZAO') and w not in NAO_AUMENTATIVO) for w in ws):
+        out.add('aumentativo')
+    return out
+
+
+# --- Família ---------------------------------------------------------------------------------------------------------
+
+# por grau de parentesco; um nome pode ter mais de um ("Pai e Filhos"). "Família" não é parente e não conta;
+# Mano/Mana quase sempre é gíria ou outra língua ("Fatto a Mano"), Netinho é apelido
+PARENTES = {
+    'avos': P('VO VOVO VOVOZINHA VOVOZINHO AVO AVOS BISA BISAVO NONNA NONA NONNO'),
+    'pais': P('MAE MAES MAMAE MAINHA MAEZINHA MAMMA PAI PAPAI PAINHO PAIZAO PAIZINHO MOM DAD MOTHER'),
+    'tios': P('TIA TIO TIAS TIOS TITIA TITIO'),
+    'irmaos': P('''IRMAO IRMAOS IRMA IRMAS IRMAOZINHO MANINHO MANINHA MANINHAS PRIMO PRIMA PRIMOS PRIMAS BROTHER BROTHERS
+SISTER SISTERS BROS GEMEOS GEMEAS CACULA'''),
+    'filhos': P('FILHOS FILHA FILHAS NETOS NETA NETAS'),      # Neto no singular é sobrenome ("Coelho Neto")
+    'agregados': P('MADRINHA PADRINHO DINDA DINDO DINDINHA COMADRE COMPADRE CUMPADE CUMADE SOGRA SOGRO GENRO CUNHADO CUNHADA'),
+}
+# expressões em que a palavra de parentesco não é parente
+NAO_PARENTE = re.compile(r'\b(MAMMA MIA|MASSA MAE|MATERIAS? PRIMAS?)\b')
+
+
+def familia(ws):
+    s = NAO_PARENTE.sub(' ', ' '.join(ws))
+    S = set(s.split())
+    out = {g for g, lex in PARENTES.items() if S & lex}
+    # Filho no singular é quase sempre sobrenome ("Rogério Santos Filho"); conta junto de outro parente ou de "e"
+    if 'FILHO' in S and (out or re.search(r'\bE FILHO\b|\bFILHO E\b', s)):
+        out.add('filhos')
+    return out
+
+
+# --- Fé --------------------------------------------------------------------------------------------------------------
+
+# uma tradição por nome, a mais específica primeiro: evangélico, católico, afro-brasileiro, cristão sem igreja
+EVANGELICO = P('''EBENEZER ADONAI SHALOM GOSPEL CANAA SHADDAI SHADAY SHADDAY ELOHIM JEOVA JIREH MARANATA HOSANA ALELUIA
+GETSEMANI SIAO BETEL YESHUA YAHWEH JAVE EVANGELICO EVANGELICA SALMO SALMOS SALMISTA ELSHADAY ELSHADDAI MANAIM PENIEL''')
+SANTOS = P('''JORGE JUDAS JOSE SEBASTIAO FRANCISCO ANTONIO EXPEDITO RITA LUZIA EDWIGES CLARA TEREZINHA TERESINHA BENEDITO
+PEDRO PAULO JOAO LAZARO MIGUEL BARBARA CECILIA CATARINA MONICA LUCAS MATEUS MARCOS TADEU BENTO CAETANO DAMIAO
+COSME GERALDO VICENTE JERONIMO ROQUE BRAS LOURENCO ONOFRE JOAQUIM ANA IFIGENIA EFIGENIA LUIZ LUIS TOMAS''')
+CATOLICO = re.compile(r'\b(NOSSA SENHORA|N SRA|NSA SRA|AVE MARIA|SAGRADO CORACAO|DIVINO ESPIRITO|DIVINA PROVIDENCIA|'
+                      r'MENINO JESUS|MENINO DEUS|MIGUEL ARCANJO|SANTISSIMA|BOM JESUS)\b')   # Arcanjo solto é sobrenome
+AFRO = P('''ORIXA ORIXAS OXALA IEMANJA YEMANJA OGUM XANGO OXUM AXE SARAVA IANSA OXOSSI EXU UMBANDA CANDOMBLE POMBAGIRA
+PILINTRA CABOCLO OBALUAE OMULU AXEXE''')
+AFRO_EXPR = re.compile(r'\b(MARIA PADILHA|PRETO VELHO|PRETA VELHA|ZE PILINTRA|SETE ENCRUZILHADAS)\b')
+# Anjo fica de fora: quase sempre doce, bicho ou sobrenome ("Papo de Anjo", "Anjos de Pata", "Anjos Colchões")
+CRISTAO = P('''DEUS JESUS CRISTO BENCAO BENCAOS ABENCOADO ABENCOADA ABENCOADOS ABENCOE MILAGRE MILAGRES AMEM AMEN
+GRATIDAO ORACAO PROVIDENCIA CRISTA CRISTAO BIBLIA''')
+# lugares e sobrenomes com nome sagrado: "São Cristóvão", "Santa Cruz", "Rua Nossa Senhora", "dos Anjos", "Cidade de Deus"
+NAO_SAGRADO = re.compile(r'\b(SAO (CRISTOVAO|CONRADO|GONCALO|PAULO|FRANCISCO XAVIER|JOAO DE MERITI|JOAO BATISTA DA LAGOA)|'
+                         r'SANTA (CRUZ|TERESA|TEREZA|MARTA|CATARINA|ROSA)|SANTO CRISTO|SANTISSIMO|'
+                         r'(AVENIDA|RUA|AV) NOSSA SENHORA|NOSSA SENHORA DE COPACABANA|DOS ANJOS|POWER AXE)\b|'
+                         r'\b[A-Z]+ DE DEUS\b(?<!BENCAO DE DEUS)')
+
+
+def fe(ws):
+    s = NAO_SAGRADO.sub(' ', ' '.join(ws))
+    sw = s.split()
+    S = set(sw)
+    if S & EVANGELICO or 'DEUS E FIEL' in s or re.search(r'\bEL SHAD', s):
+        return {'evangelico'}
+    if any(sw[i] in ('SAO', 'SANTO', 'SANTA') and sw[i + 1] in SANTOS for i in range(len(sw) - 1)) or CATOLICO.search(s):
+        return {'catolico'}
+    if S & AFRO or AFRO_EXPR.search(s):
+        return {'afro'}
+    if S & CRISTAO or re.search(r'\b(DE|COM|NA) FE\b|\bANJO DA GUARDA\b', s):
+        return {'cristao'}
+    return set()
+
+
+# --- Sotaques --------------------------------------------------------------------------------------------------------
+
+# um léxico por sotaque, sem as palavras que viraram tipo de loja (TIPO_DE_LOJA) e sem "Show", que já é português
+INGLES = P('''AND ANGEL ANGELS BABIES BABY BAKERY BARBER BARBERSHOP BEACH BEAR BEAUTY BEER BEERS BEST BIG BIKE BIKES BLACK
+BLUE BODY BRAND BROTHERS BURGER BURGERS BURGUER BY CAKE CAKES CAR CARE CARS CAT CATS CENTER CHICKEN CITY CLEAN
+CLUB COFFEE COMPANY CONCEPT COOKIES CORNER CROSS CUPCAKE CUPCAKES DELIVERY DOG DOGS DONUTS DREAM DREAMS DRINK
+DRINKS EXCHANGE EYE EYES FACE FAMILY FASHION FAST FIT FITNESS FLOW FLOWER FLOWERS FOOD FOODS FOR FOX FREE FRESH
+FRIED FRIENDS GAME GAMES GARDEN GLOW GOLDEN GOOD GREEN GRILL GYM HAIR HAPPY HEALTHY HOME HOUSE HUB IMPORT
+IMPORTS INK ISLAND JUICE KID KIDS KING KITCHEN LAB LAND LIFE LION LOOK LOOKS LOUNGE LOVE MAKE MAKEUP MALL MARKET
+MOOD MOTORS NAIL NAILS NEW OCEAN OF ONLINE ORGANIC OUTLET PARTY PHONE PHONES PINK PLACE POINT PUB QUEEN RED
+ROOFTOP SERVICE SHOES SHOP SHOPS SILVER SISTERS SKIN SKY SMART SOLUTIONS SPORT SPORTS SPOT STAR STARS STEAK
+STEAKHOUSE STORE STORES STORY STREET STREETWEAR STUDIO STUDIOS STYLE SUN SURF SURFWEAR SWEET SWEETS TATOO TATTOO
+TECH THE TIME TOWN TOY TOYS UP VIBE VIBES VILLAGE WASH WEAR WELLNESS WHITE WINE WINES WOLF WORLD''')
+# sem "Três" (é português) e "Chic" (já é "chique")
+FRANCES = P('''AMOUR AU AUX AVEC BAGUETTE BEAU BEAUTE BELLE BELLEVILLE BIEN BIJOU BIJOUX BLANC BLANCHE BONJOUR BOUCHERIE
+BOULANGERIE BRASSERIE BRIOCHE CHATEAU CHERI CHERIE CHEZ CHOCOLATERIE CIEL COIFEUR COIFFEUR COIFFEURS COIFFURE
+CREPERIE CROISSANT CROISSANTERIE DES DU ELLE ELLES ENFANT ENFANTS EPICERIE ESPACE ETOILE FEMME FILLE FILLES
+FLEUR FLEURS FROMAGERIE GATEAU GATEAUX GOURMAND GOURMANDE HOMME JOLI JOLIE LE LES LUMIERE LUNE MADAME
+MADEMOISELLE MAISON MAMAN MER MERCI MON MONSIEUR NOIR NOIRE NOUS NUIT OUI PAPILLON PARFUM PARFUMERIE PARFUMS
+PARIS PARISIEN PARISIENNE PATISSERIE PATISSIER PETIT PETITE POUR ROUGE SOLEIL VIE VOILA''')
+# artigos e palavras curtas que só contam no começo do nome ou junto de outra palavra francesa ("Le Petit", "Chez")
+FRANCES_FRACO = P('LE LES DES AU AUX MON VIE ELLE')
+# gentílico, país ou parente; sem comida (tipo de loja) e sem Israel (nome de gente ou referência evangélica)
+IMIGRACAO = P('''ACORES ACORIANO AFRICA AFRICANA AFRICANO ALEMA ANGOLA ANGOLANA ANGOLANO ARABE ARABES ARABIA ARABIAN ARGENTINA
+ARGENTINO ARMENIO BOLIVIA BOLIVIANO CHINA CHINES CHINESA COLOMBIA COLOMBIANA COLOMBIANO CONGO COREANA COREANO
+COREIA CUBA CUBANA CUBANO ESPANHA ESPANHOL ESPANHOLA GALEGA GALEGO GALICIA GRECIA GREGA GREGO HAITI HAITIANO
+HOLANDES INDIANA INDIANO IRISH IRLANDES ITALIA ITALIANA ITALIANO ITALY JAPA JAPAO JAPONES JAPONESA KOREA LIBANES
+LIBANESA LIBANO LUSA LUSITANA LUSITANO LUSO MAMMA MEXICANA MEXICANO MEXICO MINHOTA MINHOTO MOCAMBIQUE NAPOLI
+NAPOLITANA NAPOLITANO NIGERIA NIPON NIPPON NONNA NONNO PARAGUAI PARAGUAIO PEQUIM PERSA PERU PERUANA PERUANO
+PORTUGA PORTUGAL PORTUGUES PORTUGUESA PORTUGUESES SICILIA SICILIANO SIRIA SIRIO SIRIOLIBANES TAILANDES THAI
+TOKYO TOQUIO TRANSMONTANA TURCA TURCO TURQUIA URUGUAI URUGUAIA URUGUAIO VENEZUELA VENEZUELANA VENEZUELANO
+VIETNAMITA''')
+MIGRACAO = P('''ALAGOANA ALAGOANO ALAGOAS AMAZONAS AMAZONIA AMAZONICO ARRETADA ARRETADO BAHIA BAIANA BAIANAS BAIANINHA BAIANINHO
+BAIANO BAIANOS CAPIXABA CEARA CEARENSE GAUCHA GAUCHINHO GAUCHO GAUCHOS GOIANA GOIANO GOIAS MARANHAO MARANHENSE
+MINAS MINEIRA MINEIRAS MINEIRINHA MINEIRINHO MINEIRO MINEIROS NORDESTE NORDESTINA NORDESTINAS NORDESTINO
+NORDESTINOS NORTISTA OXE OXENTE PARAENSE PARAIBA PARAIBANA PARAIBANO PAULISTA PAULISTANO PAULISTINHA
+PERNAMBUCANA PERNAMBUCANO PERNAMBUCO PIAUI PIAUIENSE POTIGUAR RECIFE SERGIPANO SERGIPE SERTANEJA SERTANEJO
+SERTAO UAI VIXI''')
+# o gentílico logo depois do tipo de cozinha só diz a cozinha ("Culinária Japonesa", "Restaurante Nordestino")
+COZINHA = P('''CULINARIA COZINHA COMIDA COCINA GASTRONOMIA CANTINA RESTAURANTE PIZZARIA GELATERIA GALETERIA CHURRASCARIA
+PADARIA DOCERIA CONFEITARIA CAFETERIA PARRILLA ESPETO TEMPERO''')
+
+
+def sem_cozinha(ws):
+    """Tira o gentílico (e o "típica") que vem logo depois de uma palavra de cozinha."""
+    out = []
+    for i, w in enumerate(ws):
+        antes = [x for x in ws[max(0, i - 2):i] if x != 'TIPICA']
+        if (w in IMIGRACAO or w in MIGRACAO) and antes and antes[-1] in COZINHA | IMIGRACAO | MIGRACAO and \
+                any(x in COZINHA for x in antes):
+            continue
+        out.append(w)
+    return out
+
+
+def sotaques(ws, cru):
+    out = set()
+    S = set(ws)
+    s = ' '.join(ws)
+    # inglês: léxico, gerúndio -ING e o 's ("Firmino's", "BROTHER S PET")
+    if S & INGLES or any(len(w) > 5 and w.endswith('ING') for w in ws) or re.search(r"[A-Z]['’]S\b", cru.upper()) or \
+            any(ws[i] == 'S' and len(ws[i - 1]) > 2 for i in range(1, len(ws))):
+        out.add('ingles')
+    # francês: léxico e grafias (-ERIE, -EAU); artigo solto só conta no começo do nome
+    fr = S & FRANCES
+    if fr and fr <= FRANCES_FRACO and ws[0] not in ('LE', 'LES', 'CHEZ'):
+        fr = set()
+    if fr or any((w.endswith('ERIE') and w != 'LINGERIE') or ('EAU' in w and 'BEAUT' not in w) for w in ws):
+        out.add('frances')
+    sc = set(sem_cozinha(ws))
+    if sc & IMIGRACAO or re.search(r'\bD ITALIA\b|\bDO (PORTUGUES|TURCO|JAPA|ARABE)\b', s):
+        out.add('imigracao')
+    if sc & MIGRACAO:
+        out.add('migracao')
+    return out
+
+
+# --- Frases ----------------------------------------------------------------------------------------------------------
+
+# um tipo por nome, nesta ordem: interjeições, primeira pessoa, chamados, promessas. Léxicos de palavras e expressões,
+# inclusive falas do dia a dia ("Tá pra Peixe", "Deu Match", "Pizza Já!", "Cadê Teresa?")
+F_INTERJ = P('''OBA EBA OXENTE OXE EITA VIXE OPA UAU UAI OI OLA ALO ALOU HUM HUMM HUMMM HUMMMM AHH OHH OPS IH IHH UHU HEIN
+PARABENS SACOU PIPOCOU BOMBOU CLIQUEI VIRALIZOU RISQUEI COSTUREI PRAIOU PESCOU FORNOU LACROU CHURRAXCOU SALGADOU AFINOU
+BUGOU CERVEJEI GAVETEI LAVOU LAVEI COMPROU''')
+F_INTERJ_EXPR = re.compile(r'\b(BOM DIA|BOA TARDE|BOA NOITE|OH MY)\b')       # "Oh my" sim; "Yes", "Oh Beach" não
+# "Meu"/"Minha" contam ("Sonho Meu", "Meu Bichinho"); "Nos" fica de fora, quase sempre é "em os" ("Acerta nos Brindes")
+F_PRIMEIRA = P('''EU QUERO QUEREMOS SOU ESTOU ESTAMOS TO AMO ADORO VOU ACHEI COMPREI VOLTEI CHEGUEI PEGUEI ENCONTREI MERECO FIZ
+ENTREGAMOS MEU MINHA''')
+# sem "Leve": quase sempre é leveza ("Comida Leve"); "Pague e Leve" conta pelo "Pague"
+F_CHAMADO = P('''VEM VENHA VENHAM BORA VAMOS COMPRE COMPRA PROVE PROVA OLHA OLHE CORRE CORRA PEGA PEGUE LEVA PAGUE PAGA
+EXPERIMENTE CONFIRA APROVEITE APROVEITA ENTRA PEDE LIGA LIGUE SORRIA DESCUBRA VEJA TOME TOMA BEBA COMA COME FIQUE FICA ESPERE
+ESPERA VOLTE VOLTA CURTA CURTE CUIDE MANDA DIGA FALA CHEGA SEJA SEJAM FAZ FACA PASSA''')
+# falar direto com o cliente: perguntas e respostas ("Que Tal Pizza", "Porque Sim", "Isso Não É uma Barbearia")
+F_CHAMADO_EXPR = re.compile(r'\b(CADE|QUE TAL|SERA QUE|E AI|ISSO NAO E|PORQUE SIM|POR QUE NAO|SIM SENHORA?|'
+                            r'P(AR)?A QUEM PODE)\b')
+F_PROMESSA = re.compile(r'\b(TEM|TEMOS|AQUI|AKI|TUDO DE BOM|TUDO NOSSO|SO TEM|NAO TEM|PRA JA|JA ERA|'
+                        r'DEU (BOM|CERTO|SAMBA|MATCH|ONDA)|TA (NA|PRA|PRO|BARATO|BOM|EM|AQUI|LIGADO))\b|\bTANAMAO\b|'
+                        r'\b[A-Z]{3,} JA$')                                 # "Pizza Já!", "Lave Já"
+# "TO" em inglês (To Go, Buy to Buy, Reason to Buy) não é "tô"
+TO_INGLES = re.compile(r'\bTO (GO|FIX|DO|BE|GET|YOU|ME|BUY|ENJOY|ONE)\b|\b(DRESS|READY|BACK|HOW|WELCOME|GO|BUY|ONE|REASON) TO\b')
+# o verbo que é substantivo ou nome de lugar ("Compra e Venda", "Liga dos Botecos", "São Tomé")
+NAO_FRASE = re.compile(r'\b(COMPRA E VENDA|MELHOR COMPRA|LIGA D[AO]S?|SAO TOME|AQUI EMBAIXO)\b')
+
+
+def frases(ws, cru):
+    s = NAO_FRASE.sub(' ', ' '.join(ws))
+    S = set(s.split())
+    if TO_INGLES.search(s) or ('TO' in S and S & INGLES):
+        S.discard('TO')
+    if S & F_INTERJ or F_INTERJ_EXPR.search(s):
+        return {'interjeicoes'}
+    if S & F_PRIMEIRA:
+        return {'primeira'}
+    if S & F_CHAMADO or F_CHAMADO_EXPR.search(s) or '?' in cru:
+        return {'chamados'}
+    if F_PROMESSA.search(s):
+        return {'promessas'}
+    return set()
+
+
+def categorias(nome):
+    """As categorias do nome fantasia (cru, como está na Receita)."""
+    ws = [w for w in TIPO_DE_LOJA_EXPR.sub(' ', norm(nome)).split() if w not in TIPO_DE_LOJA]
+    return tamanho(ws) | familia(ws) | fe(ws) | sotaques(ws, nome) | frases(ws, nome)
