@@ -11,7 +11,7 @@ Um mapa do Rio de Janeiro feito com os letreiros do comércio de bairro. Os nome
 | Frases feitas | Chamados · Promessas · Primeira pessoa · Interjeições |
 | Lojões e lojinhas | Ãos · Inhos e inhas |
 | Família | Avós · Pai e mãe · Tios · Irmãos e primos · Filhos e netos · Sogras e compadres |
-| Sotaques | Inglês · Francês · Imigrantes · Sotaques do Brasil |
+| Sotaques | Inglês · Francês · Sotaques do Brasil |
 | Poder | Reis e rainhas · Impérios e palácios · República e patentes |
 
 ## De onde vêm os dados
@@ -34,7 +34,7 @@ Resumo; o detalhe de cada etapa, com os números de cada corte, está em [`pipel
 6. **Geocodificação** (`06_geocodifica.py`): cada endereço é casado com o trecho de rua do mesmo nome e bairro (ou de um bairro vizinho) e posicionado pela numeração, do lado par ou ímpar; sem rua, vai para o centro do bairro declarado. O bairro do comércio é o do polígono onde o ponto cai. **52.179** com ponto.
 7. **Exportação** (`07_exporta.py`): a cidade em quadradinhos de 750 m, só com os pontos de rua. A cor de cada quadradinho é o tipo que mais pesa ali comparado à média da cidade (os vizinhos contam metade, para poucos casos não piscarem), e fica mais forte quanto mais acima da média. Regiões: as cinco áreas de planejamento da Prefeitura, com a Grande Tijuca separada da Zona Sul.
 
-**Nomes que aparecem:** na cidade, uma seleção feita à mão (`pipeline/sequencias.py`); numa região, primeiro os da seleção que caem nela e depois até seis nomes reais por tipo e bairro. O tipo do comércio que aparece junto do bairro é a atividade declarada à Receita (`pipeline/cnae.py`), não necessariamente o que a loja vende hoje.
+**Nomes que aparecem:** na cidade, uma seleção feita à mão (`pipeline/sequencias.py`); numa região, primeiro os da seleção que caem nela e depois até seis nomes reais por tipo e bairro. Nos Sotaques, só aparecem os curiosos: a mistura de línguas ("Pet du Rapha", "Nilza's Modas") e a fala regional ("Arretado Bom Demais", "Mineira das Baterias"), e não a fórmula (`pipeline/destaques.py`). O tipo do comércio que aparece junto do bairro é a atividade declarada à Receita (`pipeline/cnae.py`), não necessariamente o que a loja vende hoje.
 
 **Limites.** A base é de comércios ativos: os que fecharam não aparecem. A classificação é por regras, sem leitura humana de cada nome, e erra para mais e para menos. A Receita guarda os nomes sem acento, e os da seleção são reacentuados à mão. As contagens são pequenas fora da escala da cidade; por isso o site fala em palavras ("bem mais comum que no resto da cidade") e não mostra números.
 
@@ -67,8 +67,8 @@ Os intermediários ficam em `dados/intermediarios/`. `pipeline/perfil_cnpj.py` m
 ## Estrutura
 
 ```
-pipeline/   download, etapas numeradas, regras de nome de pessoa (pessoas.py) e de categoria (categorias.py),
-            rótulos de CNAE (cnae.py), nomes da seleção (sequencias.py) e a metodologia (METODOLOGIA.md)
+pipeline/   download, etapas numeradas, regras de nome de pessoa (pessoas.py), de categoria (categorias.py) e dos nomes
+            mostrados (destaques.py), rótulos de CNAE (cnae.py), nomes da seleção (sequencias.py) e a metodologia
 docs/       o site: index.html (sem build, sem dependências) e os dois JSON que ele lê
 dados/      brutos/ e intermediarios/, criados pelo pipeline
 ```

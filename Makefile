@@ -35,7 +35,7 @@ $(I)/categorias.csv: $(I)/bairro.csv $(P)/05_categorias.py $(P)/categorias.py
 $(I)/geo.csv: $(I)/categorias.csv $(B)/logradouros.csv $(B)/trechos.json $(B)/bairros.geojson $(P)/06_geocodifica.py
 	$(PY) $(P)/06_geocodifica.py
 
-site: $(I)/geo.csv $(P)/07_exporta.py $(P)/sequencias.py $(P)/cnae.py
+site: $(I)/geo.csv $(P)/07_exporta.py $(P)/sequencias.py $(P)/destaques.py $(P)/cnae.py
 	$(PY) $(P)/07_exporta.py
 
 servir:

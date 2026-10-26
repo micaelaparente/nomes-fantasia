@@ -16,6 +16,7 @@ Uso: python pipeline/07_exporta.py
 import json
 import math
 import os
+import re
 from collections import Counter, defaultdict
 from difflib import SequenceMatcher
 
@@ -24,6 +25,7 @@ import pandas as pd
 from caminhos import BAIRROS, GEO, SITE
 from categorias import CONCEITOS
 from cnae import rotulo as tipo_cnae
+from destaques import mostra
 from pessoas import norm
 from sequencias import SEQUENCIAS
 
@@ -39,12 +41,20 @@ PRIORIDADE = {'familia': ['avos', 'tios', 'irmaos', 'filhos', 'agregados', 'pais
 REGIOES = ['Centro', 'Zona Sul', 'Grande Tijuca', 'Zona Norte', 'Barra e Jacarepaguá', 'Zona Oeste']
 AP = {'1': 'Centro', '3': 'Zona Norte', '4': 'Barra e Jacarepaguá', '5': 'Zona Oeste'}
 RUIDO = set('LTDA ME EIRELI EPP SA S A CIA SLU MEI LTD'.split())
-# contam no mapa, mas não vão aos nomes mostrados: "Fulano Coiffeur" é a fórmula de um terço do francês
-NAO_MOSTRA = {'frances': set('COIFFEUR COIFFEURS COIFEUR COIFFURE'.split())}
 
 
 def limpa(nome):
     return ' '.join(w for w in norm(nome).split() if w not in RUIDO)
+
+
+def exibe(nome):
+    """O nome como vai ao site: maiúsculo, com a pontuação ("NILZA'S MODAS", "SACOU BICHO !!!"), sem a razão social."""
+    n = re.sub(r'\s+', ' ', nome.upper()).strip()
+    while True:
+        m = re.sub(r'[\s,.-]*\b(LTDA|ME|EIRELI|EPP|MEI|SLU|CIA|S/?A|S\.A)\.?$', '', n)
+        if m == n:
+            return n
+        n = m
 
 
 def xy(lon, lat):
@@ -99,8 +109,8 @@ for r in df.itertuples():
             sub_rp[s][rp] += 1
         if ap:
             sub_ap[s][ap] += 1
-        if not NAO_MOSTRA.get(s, set()) & set(r.nome.split()):
-            pool[s][b].setdefault(r.nome, (r.x, r.y, tipo_cnae(r.cnae)))
+        if mostra(s, r.nome_fantasia):
+            pool[s][b].setdefault(exibe(r.nome_fantasia), (r.x, r.y, tipo_cnae(r.cnae)))
     por_nome.setdefault(r.nome, (r.x, r.y, b, tipo_cnae(r.cnae)))
 N = sum(tot_b.values())
 print('comércios', N, '| na grade', sum(c[0] for c in celulas.values()), '| quadradinhos', len(celulas))

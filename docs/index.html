@@ -15,7 +15,7 @@
   --papel: #EFE9DF; --ladrilho: #DCD4C7; --ladrilho-raro: #E6DFD4; --tinta: #16140F; --tinta-2: #5F5A50; --linha: #CFC6B8;
   --aumentativo: #3A3FB8; --diminutivo: #F07FAE;   /* ãos pesados (anil), inhos leves (rosa-chiclete) */
   --chamados: #F2A900; --promessas: #2A9D8F; --primeira: #9B5DE5; --interjeicoes: #FF6B35;
-  --ingles: #1D4ED8; --frances: #FF4FA3; --imigracao: #00995C; --migracao: #FF7A00;
+  --ingles: #1D4ED8; --frances: #FF4FA3; --migracao: #FF7A00;
   --avos: #7C3AED; --pais: #E3241B; --tios: #FF7A00; --irmaos: #00A3B4; --filhos: #FFC400; --agregados: #00995C;
   --reis: #E0A100; --imperios: #8B1E3F; --republica: #1F8A4C;   /* ouro de coroa, vinho de palácio, verde de bandeira */
   --placa: "Bungee", "Arial Black", Impact, sans-serif;
@@ -209,14 +209,14 @@ h2 { margin: 0; font: 800 clamp(36px, 3.4vw, 52px)/.9 var(--texto); font-stretch
 const CAP = {
   tamanho:  { nome: 'Lojões e lojinhas', lema: 'O carioca aumenta e diminui as coisas por carinho: o Mercadão e o Mercadinho moram na mesma rua.' },
   frases:   { nome: 'Frases feitas', lema: 'Tem letreiro que não informa, puxa conversa. E do outro lado da cidade alguém responde.' },
-  culturas: { nome: 'Sotaques', lema: 'Portuga no hortifrúti, madame no frango, mineiro no cachorro-quente: a cidade tem sotaque de todo lugar.' },
+  culturas: { nome: 'Sotaques', lema: "Pet du Rapha, Nilza's Modas, Mineira das Baterias: no letreiro, a cidade mistura as línguas do seu jeito." },
   familia:  { nome: 'Família', lema: 'Vó, tia, compadre e sogra: tem comércio que é a família inteira com a porta aberta para a rua.' },
   poder:    { nome: 'Poder', lema: 'Rei do joelho, império do ovo, ministério da pizza: atrás do balcão, todo mundo manda um pouco.' },
 };
 const ORDEM = ['frases', 'tamanho', 'familia', 'culturas', 'poder'];
 const TIPO = { aumentativo: 'Ãos', diminutivo: 'Inhos e inhas', ingles: 'Inglês', frances: 'Francês',
   chamados: 'Chamados', promessas: 'Promessas', primeira: 'Primeira pessoa', interjeicoes: 'Interjeições',
-  imigracao: 'Imigrantes', migracao: 'Sotaques do Brasil',
+  migracao: 'Sotaques do Brasil',
   avos: 'Avós', pais: 'Pai e mãe', tios: 'Tios', irmaos: 'Irmãos e primos', filhos: 'Filhos e netos', agregados: 'Sogras e compadres',
   reis: 'Reis e rainhas', imperios: 'Impérios e palácios', republica: 'República e patentes' };
 const ICONE = { pausar: '<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M4.5 2.5V11.5M9.5 2.5V11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',

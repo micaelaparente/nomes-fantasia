@@ -170,6 +170,9 @@ Axé, Umbanda, Maria Padilha, Zé Pilintra), cristão sem igreja (Deus, Jesus, B
 
 ### Sotaques: 6.514 inglês · 535 francês · 294 migração interna · 216 imigração
 
+O site mostra inglês, francês e migração interna (Sotaques do Brasil); a imigração é calculada em `categorias.csv`,
+mas fica fora do site.
+
 - **Inglês:** palavra do léxico, gerúndio -ING ou o 's ("Firmino's", "Nilza's Modas"). O inglês de vitrine conta ("Rio
   Store", "JR Car", "Luiza Hair"): ele é o fenômeno. "Show" não conta: já é português.
 - **Francês:** palavra do léxico ou grafia francesa (-ERIE, -EAU). Artigo solto (Le, Les, Au, Mon...) só conta no começo
@@ -248,5 +251,14 @@ Grava `docs/dados.json` e `docs/lugares.json`, os dois arquivos que o site lê.
   casos do tipo (3+ nos tipos com menos de 150 na cidade). Sogras e compadres (13 nomes) não tem bairro com 3 casos, e
   o site não mostra ranking para ele.
 - **Nomes mostrados:** a seleção à mão de `sequencias.py` e até 6 nomes reais por tipo e bairro, os de tamanho mais
-  legível primeiro, sem quase-repetidos. No francês, os nomes com "Coiffeur" contam no mapa, mas não entram entre os
-  nomes mostrados: "Fulano Coiffeur" é a fórmula de um terço do tipo.
+  legível primeiro, sem quase-repetidos, com a pontuação do letreiro e sem a razão social.
+- **Nos Sotaques, só os curiosos** (`destaques.py`). O mapa conta todos os nomes do tipo; os mostrados são a mistura de
+  línguas ou a fala regional, e não a fórmula:
+  - inglês: o 's numa palavra portuguesa que não é nome de gente ("Nilza's Modas", "Casa Fruta's", "Budega's Brasa"), ou
+    palavra inglesa costurada no português com do/da ("King do Gelo", "World dos Cabelos"); fora "Point do X", "Shop
+    dos X" e "Rio Store";
+  - francês: artigo francês com palavra portuguesa ("Mercadinho du Fogo", "Pet du Rapha", "Chez Marizete"), ou Madame e
+    Monsieur ("Madame Surto", "Quintal de Madame"); fora o salão ("Fulano Coiffeur", "Belle", "Beauté");
+  - Sotaques do Brasil: a fala regional ("Uai", "Oxente", "Vixi", "Arretado") ou o gentílico como apelido de gente ("Bar
+    do Mineiro", "Mineira das Baterias", "Radiadores O Paraíba"); fora a origem do produto ("Sabor de Minas",
+    "Delícias do Nordeste").

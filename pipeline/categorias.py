@@ -18,7 +18,7 @@ def P(txt):
 CONCEITOS = {
     'tamanho': ['aumentativo', 'diminutivo'],
     'frases': ['chamados', 'promessas', 'primeira', 'interjeicoes'],
-    'culturas': ['ingles', 'frances', 'imigracao', 'migracao'],
+    'culturas': ['ingles', 'frances', 'migracao'],
     'familia': ['avos', 'pais', 'tios', 'irmaos', 'filhos', 'agregados'],
     'poder': ['reis', 'imperios', 'republica'],
 }
