@@ -483,15 +483,10 @@ function aplicarFoco() {
   $('escala').innerHTML = [.25, .5, .75, 1].map(t => `<i style="background:${mix(cor, CSS.ladrilho, t)}"></i>`).join('');
 }
 const alvoAtual = () => foco || (D.conceitos[cap].length === 1 ? D.conceitos[cap][0] : null);
-// o quanto um tipo se destaca num lugar, em palavras; nada quando há poucos casos ou está perto da média
-function quanto(p) {
-  if (!p.confiavel || p.mult < 1.15) return null;
-  return p.mult >= 2.5 ? 'muito mais comum' : p.mult >= 1.6 ? 'bem mais comum' : 'um pouco mais comum';
-}
 const lista = ns => ns.length > 1 ? ns.slice(0, -1).join(', ') + ' e ' + ns[ns.length - 1] : ns[0];
 const DICA = 'Passe o mouse (ou toque) num bairro para ver exemplos.';
 
-// a coluna fala em palavras: onde o tipo se concentra e o que se destaca na região, sem multiplicadores
+// a coluna diz, em palavras, só o que as etiquetas do mapa marcam: os bairros onde o tipo filtrado se concentra
 function montarOnde() {
   const alvo = alvoAtual(), onde = $('onde');
   let h = '';
@@ -500,41 +495,38 @@ function montarOnde() {
     // tipos pequenos podem não ter bairro com casos suficientes para o ranking: aí não se diz nada
     h = alvo && D.ranking[alvo].bairros.length ? `<p>“${TIPO[alvo]}” se concentra mais em ${lista(D.ranking[alvo].bairros.slice(0, 3).map(b => `<strong>${e(b[0])}</strong>`))}.</p>` : '';
   } else {
-    const c = contagem(lugar), reg = regiaoAtual(), aqui = (reg === 'Centro' ? 'No ' : 'Na ') + e(reg);
-    if (alvo) {
-      const q = quanto(peso(c, alvo)), ds = destaquesNaRegiao(reg, alvo).filter(([, p]) => quanto(p));
-      h = `<p>${aqui}, “${TIPO[alvo]}” é ${q ? `<strong>${q}</strong> que no resto da cidade` : 'perto da média da cidade, ou tem poucos casos'}.`
-        + (ds.length ? ` Mais concentrado em ${lista(ds.map(([b]) => `<strong>${e(b)}</strong>`))}.` : '') + `</p><p class="como">${DICA}</p>`;
-    } else {
-      const ps = D.conceitos[cap].map(s => [s, quanto(peso(c, s)), peso(c, s).mult]).filter(x => x[1]).sort((a, b) => b[2] - a[2]);
-      h = (ps.length ? `<p>${aqui}, o que mais se destaca é “${TIPO[ps[0][0]]}”: <strong>${ps[0][1]}</strong> que no resto da cidade.</p>`
-        : `<p>${aqui}, nenhum tipo deste capítulo se destaca bem acima do resto da cidade.</p>`) + `<p class="como">${DICA}</p>`;
-    }
+    const reg = regiaoAtual(), ds = alvo ? destaquesNaRegiao(reg, alvo) : [];
+    h = (ds.length ? `<p>${reg === 'Centro' ? 'No ' : 'Na '}${e(reg)}, “${TIPO[alvo]}” se concentra mais em ${lista(ds.map(([b]) => `<strong>${e(b)}</strong>`))}.</p>` : '')
+      + `<p class="como">${DICA}</p>`;
     if (!fila.length) h += '<p>Nenhum letreiro deste tipo por aqui.</p>';
   }
   onde.innerHTML = h;
 }
 
-// a dica do bairro sob o cursor (ou tocado): o tipo que mais se destaca ali, em palavras, e até dois letreiros de exemplo
+// a dica do bairro sob o cursor (ou tocado): até cinco letreiros do capítulo, cada um com a cor do seu tipo
 const titulo = s => s.toLowerCase().replace(/(^|\s)(\S)/g, (m, a, l) => a + l.toUpperCase()).replace(/ (De|Da|Do|Das|Dos|E|Di|D) /g, w => w.toLowerCase());
-function exemplos(b, s, k) {               // [nome, tipo do comércio]
-  const curados = D.sequencias[cap].flatMap(g => g[1]).filter(it => it[3] === b && it[4] === s).map(it => [it[2], it[5]]);
-  const visto = new Set(), out = [];
-  for (const [n, t] of curados.concat(((L.nomes[s] || {})[b] || []).map(x => [titulo(x[0]), x[3]]))) {
-    if (!visto.has(norm(n)) && out.length < k) { visto.add(norm(n)); out.push([n, t]); }
+// os tipos na proporção do bairro: cada vaga vai ao tipo com mais casos por nome já escolhido;
+// dentro do tipo, os curados primeiro
+function exemplos(b, k) {                  // [nome, tipo]
+  const visto = new Set(), filas = (foco ? [foco] : D.conceitos[cap]).map(s => {
+    const curados = D.sequencias[cap].flatMap(g => g[1]).filter(it => it[3] === b && it[4] === s).map(it => it[2]);
+    return { s, n: L.bairros[b][2][D.subs.indexOf(s)], ns: curados.concat(((L.nomes[s] || {})[b] || []).map(x => titulo(x[0]))), out: 0 };
+  });
+  const out = [];
+  while (out.length < k) {
+    for (const f of filas) while (f.ns.length && visto.has(norm(f.ns[0]))) f.ns.shift();
+    const f = filas.filter(f => f.ns.length).sort((a, b) => b.n / (b.out + 1) - a.n / (a.out + 1))[0];
+    if (!f) break;
+    const n = f.ns.shift(); visto.add(norm(n)); f.out++; out.push([n, f.s]);
   }
   return out;
 }
 function mostrarDica() {
   const d = $('balao');
   if (!hover || hover.tipo !== 'bairro' || anim || !D.celsBairro[hover.nome]) { d.hidden = true; return; }
-  const b = hover.nome, c = contagem({ tipo: 'bairro', nome: b });
-  const ps = (foco ? [foco] : D.conceitos[cap]).map(s => { const p = peso(c, s); return { s, p, q: quanto(p) }; })
-    .sort((x, y) => (y.q ? y.p.mult : 0) - (x.q ? x.p.mult : 0) || y.p.n - x.p.n);
-  const top = ps[0], s = top.q || foco ? top.s : (ps.find(x => exemplos(b, x.s, 1).length) || top).s, ex = exemplos(b, s, 2);
-  const linha = top.q ? `<span><i style="background:${COR[top.s]}"></i>“${TIPO[top.s]}”: ${top.q} que no resto da cidade</span>`
-    : `<span>${foco ? `“${TIPO[foco]}”: perto da média, ou poucos casos` : 'Nada deste capítulo se destaca aqui'}</span>`;
-  d.innerHTML = `<b>${e(b)}</b>${linha}${ex.length ? `<em>ex.: ${ex.map(([n, t]) => e(n) + (t ? ` (${e(t)})` : '')).join(', ')}</em>` : ''}`;
+  const b = hover.nome, ex = exemplos(b, 5);
+  d.innerHTML = `<b>${e(b)}</b>` + (ex.length ? ex.map(([n, s]) => `<span><i style="background:${COR[s]}"></i>${e(n)}</span>`).join('')
+    : '<span>Nenhum letreiro deste capítulo aqui</span>');
   // em cima dos quadradinhos do bairro; perto do topo do palco, embaixo deles
   const cs = D.celsBairro[b], xs = cs.map(q => q[0]), ys = cs.map(q => q[1]);
   const X = ox + ((Math.min(...xs) + Math.max(...xs) + 1) / 2 - V.x0) * T, Y0 = oy + (Math.min(...ys) - V.y0) * T, Y1 = oy + (Math.max(...ys) + 1 - V.y0) * T;
@@ -660,7 +652,7 @@ function desenharBase() {
     const s = c.suave, n = s[0]; let melhor = null, mi = 0;
     for (const sub of foco ? [foco] : D.conceitos[cap]) {
       const i = D.subs.indexOf(sub), cv = s[1 + i], idx = (cv / n) / D.taxa[i];
-      if (cv >= (D.taxa[i] < .003 ? 1 : 2) && idx > mi) { mi = idx; melhor = sub; }
+      if (cv >= 2 && idx > mi) { mi = idx; melhor = sub; }
     }
     const X = ox + (c[0] - V.x0) * T, Y = oy + (c[1] - V.y0) * T;
     if (X > W || Y > H || X + T < 0 || Y + T < 0) continue;
