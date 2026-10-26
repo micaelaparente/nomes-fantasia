@@ -29,18 +29,15 @@ SEQUENCIAS = {
          ['Nos Ta Aki', 'Nós Tá Aki'], ['Aqui Conserta', 'Aqui Conserta'], ['Pipocou Doces', 'Pipocou'], ['Salgadou', 'Salgadou'],
          ['Lavou', 'Lavou'], ['Tudo de Bom', 'Tudo de Bom'], ['To Junto Bebidas', 'Tô Junto'], ['Bora Comer', 'Bora Comer']],
     ],
-    'fe': [
-        # fé: só o sagrado em negócio que não tem nada a ver com religião (nada de farmácia com nome de santo)
-        ['Católico', ['Abrasivos Sao Joao', 'Abrasivos São João'],
-         ['Bar Sao Jorge Guereiro da Capadocia Olaria', 'Bar São Jorge Guerreiro da Capadócia'],
-         ['Casa de Racao Sao Lazaro', 'Casa de Ração São Lázaro'], ['Pet Shop Nossa Senhora de Fatima', 'Pet Shop N. Sra. de Fátima'],
-         ['Parafusos Santa Clara', 'Parafusos Santa Clara']],
-        ['Evangélico', ['Aleluia Ferragens', 'Aleluia Ferragens'], ['Gospel Hortifrutigranjeiros', 'Gospel Hortifrutigranjeiros'],
-         ['El Shaddai Motors', 'El Shaddai Motors'], ['Jireh Pecas', 'Jireh Peças'], ['Cesta Basica Deus e Fiel', 'Cesta Básica Deus É Fiel']],
-        ['Afro-brasileiro', ['Oxala Conveniencia', 'Oxalá Conveniência'], ['Cachacaria Axe', 'Cachaçaria Axé'],
-         ['Ouro de Oxum', 'Ouro de Oxum'], ['Casa do Xango', 'Casa do Xangô'], ['Imperio da Maria Padilha', 'Império da Maria Padilha']],
-        ['Cristão, sem igreja', ['Gelo Deus Todo Poderoso', 'Gelo Deus Todo Poderoso'], ['Bar Jesus', 'Bar Jesus'],
-         ['Pasta So Bencao', 'Pasta Só Bênção'], ['Otica Jesus e Luz', 'Ótica Jesus É Luz'], ['Anjos Telecom Security', 'Anjos Telecom Security']],
+    'poder': [
+        # poder: o pequeno comércio que se coroa, se faz império ou vira repartição
+        ['Reis e rainhas', ['Rei do Joelho', 'Rei do Joelho'], ['Rainha do Bacalhau', 'Rainha do Bacalhau'],
+         ['O Rei do Velocimetro', 'O Rei do Velocímetro'], ['Princesa do Gas', 'Princesa do Gás'], ['Rei do Latao', 'Rei do Latão']],
+        ['Impérios e palácios', ['Imperio do Ovo Mc', 'Império do Ovo'], ['Palacio das Racoes', 'Palácio das Rações'],
+         ['Castelo do Frio', 'Castelo do Frio'], ['Reino do Biscoito Areal', 'Reino do Biscoito'], ['Nobreza Canina', 'Nobreza Canina']],
+        ['República e patentes', ['Ministerio da Pizza', 'Ministério da Pizza'], ['Republica do Crepe', 'República do Crepe'],
+         ['Loterica Adeus Patrao', 'Lotérica Adeus Patrão'], ['Mestre do Amassado', 'Mestre do Amassado'],
+         ['Tribunal Restaurante', 'Tribunal Restaurante']],
     ],
     'culturas': [
         ['De Portugal', ['Bigode do Portuga', 'Bigode do Portuga'], ['Lava Jato do Portuga', 'Lava-Jato do Portuga'],

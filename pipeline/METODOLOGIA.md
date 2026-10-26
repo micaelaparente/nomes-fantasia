@@ -10,8 +10,9 @@ afetivo e engraçado de dar nome. São duas camadas:
 - **Categorias** (etapa 5): regras que descrevem a forma do nome (diminutivo, parentesco, inglês...). São a base do
   **mapa**: todos os nomes de cada categoria entram na conta, porque é o volume que deixa ver a geografia de um jeito de
   nomear. A categoria registra o fenômeno linguístico, mesmo quando ele é fórmula ("Dois Irmãos", "Rio Store").
-- **Destaques**: os nomes mostrados um a um. Na cidade, uma seleção feita à mão por capítulo (`sequencias.py`); numa
-  região, os nomes da seleção que caem nela e, depois, nomes reais de cada tipo e bairro.
+- **Destaques**: os nomes mostrados um a um, nos cinco capítulos do site (Frases feitas, Lojões e lojinhas, Família,
+  Sotaques e Poder). Na cidade, uma seleção feita à mão por capítulo (`sequencias.py`); numa região, os nomes da seleção
+  que caem nela e, depois, nomes reais de cada tipo e bairro.
 
 ## Limites
 
@@ -157,6 +158,8 @@ Por grau de parentesco, com um léxico por grau (`PARENTES`). Um nome pode ter m
 
 ### Fé: 171 católico · 112 evangélico · 44 cristão sem igreja · 28 afro-brasileiro
 
+Calculada em `categorias.csv`, mas fora do site.
+
 Uma tradição por nome, a mais específica primeiro: evangélico (Ebenezer, Adonai, Canaã, El Shaddai, Peniel, Gospel),
 católico (São/Santo/Santa + santo da lista, Nossa Senhora, Bom Jesus, São Miguel Arcanjo), afro-brasileiro (orixás,
 Axé, Umbanda, Maria Padilha, Zé Pilintra), cristão sem igreja (Deus, Jesus, Bênção, Abençoado, Bíblia, "de fé").
@@ -189,6 +192,22 @@ Barbearia") e promessas ("Tem Tudo", "Severino Tem Quase Tudo", "Tá pra Peixe d
   Botecos", "São Tomé", "Aqui Embaixo").
 - **Limite:** a fala é o tipo mais difícil de pegar por regra; expressões que não começam por uma palavra da lista
   escapam.
+
+### Poder: 400 reis e rainhas · 200 impérios e palácios · 99 república e patentes
+
+O pequeno comércio que se coroa, se faz império ou vira repartição. Um tipo por nome, nesta ordem:
+- **República e patentes:** República, Ministério, Senado, Tribunal, Presidente, Embaixada, Pátria; General, Capitão,
+  Major, Almirante, Chefe, Chefão, Patrão, Mestre, Doutor, Boss ("Ministério da Pizza", "República do Crepe", "Lotérica
+  Adeus Patrão", "Mestre do Amassado").
+- **Reis e rainhas:** Rei, Rainha, Príncipe, Princesa, Imperador, Duque, Conde, Baronesa, Lord, King, Queen ("Rei do
+  Joelho", "Rainha do Bacalhau", "O Rei do Velocímetro", "Princesa do Gás").
+- **Impérios e palácios:** Império, Reino, Palácio, Castelo, Majestade, Nobreza ("Império do Ovo", "Palácio das Rações",
+  "Castelo do Frio", "Nobreza Canina").
+- **Não contam:** título de gente seguido de "de/dos/das" ("Conde de Bonfim", "Duque de Caxias"); qualquer título seguido
+  de nome de gente, sobrenome ou nome de rua comum ("Princesa Isabel", "Presidente Vargas"), ou depois de um prenome
+  ("Eliza Conde"); Barão, quase sempre a Rua Barão de Mesquita; Marechal, quase sempre o bairro; lugares e expressões
+  ("Ilha do Governador", "Senador Camará", "Engenho da Rainha", "Castelo Branco", "Pimenta do Reino", "Fruta do Conde",
+  "Cristo Rei", "General Store"); adjetivos como Imperial, Real, Nobre e Supremo.
 
 ## Etapa 6 · Geocodificação (`06_geocodifica.py`)
 

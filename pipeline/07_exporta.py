@@ -65,7 +65,7 @@ def regiao(b):
 
 df = pd.read_csv(GEO, dtype=str, keep_default_na=False)
 df = df[df.bairro_mapa != '']
-df['subs'] = df.categorias.map(lambda c: set(c.split(';')) - {''})
+df['subs'] = df.categorias.map(lambda c: set(c.split(';')) & set(SUBS))   # só os tipos dos capítulos do site
 df['nome'] = df.nome_fantasia.map(limpa)
 df['x'], df['y'] = zip(*[xy(float(a), float(b)) for a, b in zip(df.lon, df.lat)])
 df['rua'] = df.posicao != 'centro do bairro'

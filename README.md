@@ -8,11 +8,11 @@ Um mapa do Rio de Janeiro feito com os letreiros do comércio de bairro. Os nome
 
 | Capítulo | Tipos de nome |
 |---|---|
-| Lojões e lojinhas | Ãos · Inhos e inhas |
 | Frases feitas | Chamados · Promessas · Primeira pessoa · Interjeições |
-| Sotaques | Inglês · Francês · Imigrantes · Sotaques do Brasil |
+| Lojões e lojinhas | Ãos · Inhos e inhas |
 | Família | Avós · Pai e mãe · Tios · Irmãos e primos · Filhos e netos · Sogras e compadres |
-| Fé | Santos · Aleluias · Axés · Deus no comando |
+| Sotaques | Inglês · Francês · Imigrantes · Sotaques do Brasil |
+| Poder | Reis e rainhas · Impérios e palácios · República e patentes |
 
 ## De onde vêm os dados
 
@@ -30,7 +30,7 @@ Resumo; o detalhe de cada etapa, com os números de cada corte, está em [`pipel
 2. **Atividade** (`02_atividade.py`): comércio e serviços com fachada para a rua, pela atividade principal (varejo, bares e restaurantes, padarias, salões, oficinas, consertos, academias, lotéricas etc.; lista de CNAEs no script). **64.338.**
 3. **Nomes de pessoa** (`03_nomes.py`): saem os nomes que identificam uma pessoa (CPF, só nome de pessoa, nome completo em marca pessoal). **63.410.**
 4. **Comércio de bairro** (`04_bairro.py`): saem **redes** (a mesma empresa em 3 ou mais lojas), **marcas** (o mesmo nome em 5 ou mais empresas) e **lojas de shopping** (endereço com 30 ou mais comércios, um terço ou mais de rede ou marca). **52.717.**
-5. **Categorias** (`05_categorias.py`, regras em `categorias.py`): cada nome nos tipos dos cinco capítulos, por regras de linguagem (sufixos, léxicos, expressões). Palavras que são só o nome do que a loja é ou vende (Mercadinho, Pet Shop, Sushi) não contam. Um nome pode ter tipos de capítulos diferentes; na Fé e nas Frases, fica num só tipo.
+5. **Categorias** (`05_categorias.py`, regras em `categorias.py`): cada nome nos tipos dos cinco capítulos, por regras de linguagem (sufixos, léxicos, expressões). Palavras que são só o nome do que a loja é ou vende (Mercadinho, Pet Shop, Sushi) não contam. Um nome pode ter tipos de capítulos diferentes; nas Frases e no Poder, fica num só tipo.
 6. **Geocodificação** (`06_geocodifica.py`): cada endereço é casado com o trecho de rua do mesmo nome e bairro (ou de um bairro vizinho) e posicionado pela numeração, do lado par ou ímpar; sem rua, vai para o centro do bairro declarado. O bairro do comércio é o do polígono onde o ponto cai. **52.179** com ponto.
 7. **Exportação** (`07_exporta.py`): a cidade em quadradinhos de 750 m, só com os pontos de rua. A cor de cada quadradinho é o tipo que mais pesa ali comparado à média da cidade (os vizinhos contam metade, para poucos casos não piscarem), e fica mais forte quanto mais acima da média. Regiões: as cinco áreas de planejamento da Prefeitura, com a Grande Tijuca separada da Zona Sul.
 

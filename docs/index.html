@@ -17,7 +17,7 @@
   --chamados: #F2A900; --promessas: #2A9D8F; --primeira: #9B5DE5; --interjeicoes: #FF6B35;
   --ingles: #1D4ED8; --frances: #FF4FA3; --imigracao: #00995C; --migracao: #FF7A00;
   --avos: #7C3AED; --pais: #E3241B; --tios: #FF7A00; --irmaos: #00A3B4; --filhos: #FFC400; --agregados: #00995C;
-  --catolico: #1D4ED8; --evangelico: #F59E0B; --afro: #00995C; --cristao: #7C3AED;
+  --reis: #E0A100; --imperios: #8B1E3F; --republica: #1F8A4C;   /* ouro de coroa, vinho de palácio, verde de bandeira */
   --placa: "Bungee", "Arial Black", Impact, sans-serif;
   --texto: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
   --voz: "Instrument Serif", Georgia, serif;
@@ -173,7 +173,7 @@ h2 { margin: 0; font: 800 clamp(36px, 3.4vw, 52px)/.9 var(--texto); font-stretch
     <details class="sobre">
       <summary>sobre</summary>
       <div>
-        <p>Um atlas inusitado do Rio: fé, família, sotaques e frases feitas, lidos no letreiro do comércio de bairro.</p>
+        <p>Um atlas inusitado do Rio: frases feitas, família, sotaques e poder, lidos no letreiro do comércio de bairro.</p>
         <p>No mapa, a cor mais forte marca onde o tipo de nome é mais comum que na média da cidade; toque num tipo para ver só ele, ou numa região para chegar mais perto (a roda do mouse e a pinça também aproximam). As regiões são as Áreas de Planejamento da Prefeitura, com a Grande Tijuca separada da Zona Sul. Os números comparam nomes, não pessoas: mostram como o comércio se batiza, não quem mora em cada lugar.</p>
         <p>52 mil comércios de bairro ativos (CNPJ, Receita Federal): pequenos negócios com fachada para a rua, fora redes, franquias, bancos e shoppings. Os nomes foram classificados por regras de linguagem, e o tipo de cada comércio é a atividade declarada à Receita (CNAE), não necessariamente o que vende hoje; há erros.</p>
       </div>
@@ -211,14 +211,14 @@ const CAP = {
   frases:   { nome: 'Frases feitas', lema: 'Tem letreiro que não informa, puxa conversa. E do outro lado da cidade alguém responde.' },
   culturas: { nome: 'Sotaques', lema: 'Portuga no hortifrúti, madame no frango, mineiro no cachorro-quente: a cidade tem sotaque de todo lugar.' },
   familia:  { nome: 'Família', lema: 'Vó, tia, compadre e sogra: tem comércio que é a família inteira com a porta aberta para a rua.' },
-  fe:       { nome: 'Fé', lema: 'São Jorge no bar, aleluia na ferragem, axé na cachaçaria. A fé sai da igreja e vai trabalhar.' },
+  poder:    { nome: 'Poder', lema: 'Rei do joelho, império do ovo, ministério da pizza: atrás do balcão, todo mundo manda um pouco.' },
 };
-const ORDEM = ['tamanho', 'frases', 'culturas', 'familia', 'fe'];
+const ORDEM = ['frases', 'tamanho', 'familia', 'culturas', 'poder'];
 const TIPO = { aumentativo: 'Ãos', diminutivo: 'Inhos e inhas', ingles: 'Inglês', frances: 'Francês',
   chamados: 'Chamados', promessas: 'Promessas', primeira: 'Primeira pessoa', interjeicoes: 'Interjeições',
-  imigracao: 'Imigrantes', migracao: 'Sotaques do Brasil', catolico: 'Santos', evangelico: 'Aleluias',
+  imigracao: 'Imigrantes', migracao: 'Sotaques do Brasil',
   avos: 'Avós', pais: 'Pai e mãe', tios: 'Tios', irmaos: 'Irmãos e primos', filhos: 'Filhos e netos', agregados: 'Sogras e compadres',
-  afro: 'Axés', cristao: 'Deus no comando' };
+  reis: 'Reis e rainhas', imperios: 'Impérios e palácios', republica: 'República e patentes' };
 const ICONE = { pausar: '<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M4.5 2.5V11.5M9.5 2.5V11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
   tocar: '<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 2L12 7L3 12Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>' };
 const e = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -287,7 +287,7 @@ Promise.all([buscar('dados.json'), buscar('lugares.json')]).then(([d, l]) => {
   gestos();
   new ResizeObserver(medir).observe(palco);
   montarTrilha(); medir();
-  escolher('tamanho');
+  escolher(ORDEM[0]);
   requestAnimationFrame(quadro);
 });
 

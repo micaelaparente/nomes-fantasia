@@ -7,7 +7,7 @@ A categoria descreve a forma do nome; se ele é inusitado é outra camada. Palav
 """
 import re
 
-from pessoas import norm
+from pessoas import norm, PRENOMES, SOBRENOMES
 
 
 def P(txt):
@@ -18,9 +18,9 @@ def P(txt):
 CONCEITOS = {
     'tamanho': ['aumentativo', 'diminutivo'],
     'frases': ['chamados', 'promessas', 'primeira', 'interjeicoes'],
-    'fe': ['catolico', 'evangelico', 'afro', 'cristao'],
     'culturas': ['ingles', 'frances', 'imigracao', 'migracao'],
     'familia': ['avos', 'pais', 'tios', 'irmaos', 'filhos', 'agregados'],
+    'poder': ['reis', 'imperios', 'republica'],
 }
 
 
@@ -260,7 +260,44 @@ def frases(ws, cru):
     return set()
 
 
+# --- Poder -----------------------------------------------------------------------------------------------------------
+
+# um tipo por nome, nesta ordem: república e patentes, reis e rainhas, impérios e palácios
+REIS = P('''REI RAINHA RAINHAS REIZINHO REIZINHA PRINCIPE PRINCIPES PRINCESA PRINCESAS PRINCESINHA PRINCEZINHA PRINCIPEZINHO
+IMPERADOR IMPERATRIZ KING KINGS QUEEN QUEENS PRINCE PRINCESS DUQUE DUQUESA CONDE CONDESSA BARONESA VISCONDE LORD
+LORDE SULTAO FARAO MARAJA CZAR''')
+IMPERIOS = P('IMPERIO IMPERIOS REINO REINADO PALACIO PALACIOS PALACE CASTELO CASTELOS MAJESTADE NOBREZA EMPIRE')
+REPUBLICA = P('''REPUBLICA MINISTERIO MINISTRO SENADO SENADOR TRIBUNAL PRESIDENTE PRESIDENCIA GOVERNADOR PREFEITO PREFEITURA
+DEPUTADO VEREADOR EMBAIXADA EMBAIXADOR CONSULADO PATRIA CONGRESSO PARLAMENTO GENERAL CAPITAO CORONEL MAJOR ALMIRANTE
+TENENTE SARGENTO COMANDANTE XERIFE DELEGADO CHEFE CHEFAO PATRAO BOSS MESTRE DOUTOR''')
+# depois de um título de gente, "de/dos/das" faz dele rua ("Conde de Bonfim", "Duque de Caxias"); depois de qualquer
+# título, nome de gente, sobrenome ou um dos nomes de rua mais comuns com título fazem dele rua ou pessoa ("Princesa
+# Isabel", "Presidente Vargas", "General Osório")
+TITULO_DE_GENTE = P('''DUQUE DUQUESA CONDE CONDESSA VISCONDE BARONESA PRINCESA PRINCIPE IMPERADOR IMPERATRIZ PRESIDENTE
+GOVERNADOR PREFEITO SENADOR DEPUTADO MINISTRO EMBAIXADOR GENERAL CAPITAO CORONEL MAJOR ALMIRANTE TENENTE SARGENTO
+COMANDANTE DOUTOR''')
+NOME_DE_RUA = P('VARGAS OSORIO CAXIAS MESQUITA BONFIM PIRAJA ABRANTES TAMANDARE HERMES RONDON BARROSO FLORIANO DEODORO')
+# Barão fica de fora: quase sempre é a Rua Barão de Mesquita ("Amarelinho da Barão", "Delícias do Barão")
+# lugares, plantas e expressões com título que não falam de poder
+NAO_PODER = re.compile(r'\b(ILHA DO GOVERNADOR|MARECHAL|SENADOR CAMARA|SENADOR VASCONCELOS|ENGENHO DA RAINHA|VILA RAINHA|'
+                       r'CASTELO BRANCO|MONTE CASTELO|REINO UNIDO|PIMENTA DO REINO|FRUTA DO CONDE|GENERAL STORE|'
+                       r'CRISTO REI|JESUS REI|ASTRO REI|TRES REIS|SANTOS REIS|REI MOMO|RAINHA SANTA ISABEL)\b')
+
+
+def poder(ws):
+    sw = NAO_PODER.sub(' ', ' '.join(ws)).split()
+    def conta(i):
+        # depois de um prenome, o título é sobrenome ("Eliza Conde Atelier")
+        seg, ant = (sw[i + 1] if i + 1 < len(sw) else ''), (sw[i - 1] if i else '')
+        de = seg in ('DE', 'DOS', 'DAS') and sw[i] in TITULO_DE_GENTE
+        return not de and seg not in PRENOMES | SOBRENOMES | NOME_DE_RUA and ant not in PRENOMES
+    for tipo, lex in (('republica', REPUBLICA), ('reis', REIS), ('imperios', IMPERIOS)):
+        if any(w in lex and conta(i) for i, w in enumerate(sw)):
+            return {tipo}
+    return set()
+
+
 def categorias(nome):
     """As categorias do nome fantasia (cru, como está na Receita)."""
     ws = [w for w in TIPO_DE_LOJA_EXPR.sub(' ', norm(nome)).split() if w not in TIPO_DE_LOJA]
-    return tamanho(ws) | familia(ws) | fe(ws) | sotaques(ws, nome) | frases(ws, nome)
+    return tamanho(ws) | familia(ws) | fe(ws) | sotaques(ws, nome) | frases(ws, nome) | poder(ws)
