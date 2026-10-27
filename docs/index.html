@@ -47,10 +47,10 @@ h1 { margin: 0; font: italic 400 30px/1 var(--voz); white-space: nowrap; }
 .sobre { position: relative; }
 .sobre summary { cursor: pointer; list-style: none; height: 40px; display: flex; align-items: center; font: italic 400 20px var(--voz); text-decoration: underline 1px; text-underline-offset: 4px; }
 .sobre summary::-webkit-details-marker { display: none; }
-.sobre div { position: absolute; right: 0; top: 48px; width: min(380px, 86vw); background: var(--papel); border: 1.5px solid var(--tinta); box-shadow: 6px 6px 0 var(--tinta); padding: 20px 22px 22px; display: grid; gap: 10px; }
+.sobre div { position: absolute; right: 0; top: 48px; width: min(380px, 86vw); background: var(--papel); border: 1.5px solid var(--tinta); box-shadow: 6px 6px 0 var(--tinta); padding: 20px 22px 22px; display: grid; gap: 10px; max-height: calc(100vh - 80px); overflow-y: auto; }
 .sobre p { margin: 0; font: 400 14px/1.45 var(--texto); }
 .sobre p:first-child { font: italic 400 19px/1.2 var(--voz); }
-.sobre p:last-child { font-size: 13px; color: var(--tinta-2); }
+.sobre h3 { margin: 6px 0 -6px; font: 600 11px/1 var(--texto); letter-spacing: .12em; text-transform: uppercase; color: var(--tinta-2); }
 
 /* coluna editorial: capítulo, lema e a tabela de tipos (do mais comum ao menos comum, no lugar escolhido) */
 .cabeca, .tipos-bloco { border-right: 1px solid var(--linha); padding: 0 40px 0 var(--margem); }
@@ -174,8 +174,14 @@ h2 { margin: 0; font: 800 clamp(36px, 3.4vw, 52px)/.9 var(--texto); font-stretch
       <summary>sobre</summary>
       <div>
         <p>Um atlas inusitado do Rio: frases feitas, família, sotaques e poder, lidos no letreiro do comércio de bairro.</p>
-        <p>No mapa, a cor mais forte marca onde o tipo de nome é mais comum que na média da cidade; toque num tipo para ver só ele, ou numa região para chegar mais perto (a roda do mouse e a pinça também aproximam). As regiões são as Áreas de Planejamento da Prefeitura, com a Grande Tijuca separada da Zona Sul. Os números comparam nomes, não pessoas: mostram como o comércio se batiza, não quem mora em cada lugar.</p>
-        <p>52 mil comércios de bairro ativos (CNPJ, Receita Federal): pequenos negócios com fachada para a rua, fora redes, franquias, bancos e shoppings. Os nomes foram classificados por regras de linguagem, e o tipo de cada comércio é a atividade declarada à Receita (CNAE), não necessariamente o que vende hoje; há erros.</p>
+        <h3>Os dados</h3>
+        <p>O cadastro de CNPJ da Receita Federal (janeiro de 2026), pela Base dos Dados. Para pôr cada comércio no mapa, as ruas com a numeração de cada trecho e os limites dos bairros, do Instituto Pereira Passos (Data.Rio, Prefeitura do Rio).</p>
+        <h3>Quem entra</h3>
+        <p>52 mil comércios ativos com nome fantasia e fachada para a rua, pela atividade declarada (lojas, bares, salões, oficinas…). Ficam fora redes, franquias, lojas de shopping e nomes de pessoa.</p>
+        <h3>Como se classifica</h3>
+        <p>Regras de linguagem (listas de palavras e padrões) põem cada nome num tipo: diminutivo, parente, inglês, rei… Um nome pode ter mais de um tipo, e há erros.</p>
+        <h3>O mapa</h3>
+        <p>A cidade em quadradinhos de 750 m, cada comércio no ponto da rua pelo número. Em cada quadradinho, a parte dos comércios que é de cada tipo é comparada à da cidade inteira; o tipo que mais passa da média dá a cor. Cor mais forte, maior concentração. Sem cor: nenhum tipo fica ao menos 20% acima da média, ou há menos de dois casos. As regiões são as Áreas de Planejamento da Prefeitura, com a Grande Tijuca separada da Zona Sul.</p>
       </div>
     </details>
   </header>
