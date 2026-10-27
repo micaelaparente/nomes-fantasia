@@ -416,12 +416,13 @@ function sob(ev) {
 }
 
 // ---------- capítulo, tipos e o que a coluna diz
-// a ordem dos nomes: alterna entre os grupos (avó, tio, mãe…); na cidade, o tamanho vem em pares e as frases em conversa;
+// a ordem dos nomes: alterna entre os grupos (avó, tio, mãe…); na cidade, o tamanho vem em pares e uma lista só
+// (as frases em conversa, os sotaques do mais inusitado ao menos) vem na ordem dela;
 // numa região, primeiro os nomes curados que caem ali, depois nomes reais da região (os bairros com mais casos primeiro)
 function montarFila() {
   if (!lugar) {
     const grupos = D.sequencias[cap].map(g => g[1].filter(it => !foco || it[4] === foco)).filter(g => g.length);
-    if (cap === 'tamanho' || cap === 'frases') return grupos.flat();
+    if (cap === 'tamanho' || D.sequencias[cap].length === 1) return grupos.flat();
     return intercalar(grupos);
   }
   const ali = b => L.bairros[b] && L.bairros[b][0] === lugar.nome;

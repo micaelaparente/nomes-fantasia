@@ -4,7 +4,7 @@ Cada nome é [como está nos dados, como aparece no site]; o 07_exporta.py procu
 """
 
 # Sequências: grupos com rótulo e nomes [como está nos dados, como aparece]. A página alterna entre os grupos
-# (um de cada por vez), para mostrar variedade com fio condutor; frases são uma conversa única, em ordem.
+# (um de cada por vez), para mostrar variedade com fio condutor; frases e sotaques são uma lista só, em ordem.
 # tamanho: pares do mesmo radical, o grande e o pequeno aparecem juntos
 SEQUENCIAS = {
     'tamanho': [
@@ -40,21 +40,21 @@ SEQUENCIAS = {
          ['Tribunal Restaurante', 'Tribunal Restaurante']],
     ],
     'culturas': [
-        # sotaques: a mistura de línguas, o francês de verdade e a fala regional, onde eles surpreendem
-        ['Bistrô e creperie', ['Le Ble Noir Creperie', 'Le Blé Noir Creperie'], ['Amelie Creperie et Bistrot', 'Amélie Creperie et Bistrot'],
-         ["Chez l'Ami Brasserie", "Chez l'Ami Brasserie"], ['Le Cafe d Ici', "Le Café d'Ici"]],
-        ['Maison e petit', ['Le Figuier et Lolivier', "Le Figuier et l'Olivier"], ['Chez la Mer', 'Chez la Mer'],
-         ['Maison de Fromage', 'Maison de Fromage'], ['Le Petit Macaron', 'Le Petit Macaron']],
-        ['Francês carioca', ['Le Crepe Carioca', 'Le Crêpe Carioca'], ['Le Pain Carioca', 'Le Pain Carioca'],
-         ['Le Petit Recreio', 'Le Petit Recreio'], ['Cafe du Recanto', 'Café du Recanto']],
-        ["O 's carioca", ["Nilza's Modas", "Nilza's Modas"], ["Casa Fruta's", "Casa Fruta's"],
-         ["Budega's Brasa", "Budega's Brasa"], ["Terapia dos Cachos's", "Terapia dos Cachos's"]],
-        ['Inglês com do e da', ['King do Gelo', 'King do Gelo'], ['World dos Cabelos', 'World dos Cabelos'],
-         ['Make do Isaias', 'Make do Isaías'], ['Phone do Gabriel', 'Phone do Gabriel']],
-        ['Uai, oxe, arretado', ['Arretado Bom Demais', 'Arretado Bom Demais'], ['Pet Uai', 'Pet Uai'],
-         ['Vixi Restaurante Nordestino', 'Vixi Restaurante Nordestino'], ['Oxe e do Nordeste', 'Oxe É do Nordeste']],
-        ['O apelido de origem', ['Mineira das Baterias', 'Mineira das Baterias'], ['Mineiro dos Passaros', 'Mineiro dos Pássaros'],
-         ['Radiadores O Paraiba', 'Radiadores O Paraíba'], ['Barbearia e Tattoo do Mineiro', 'Barbearia e Tattoo do Mineiro']],
+        # sotaques: uma lista só, do mais inusitado ao menos, alternando as línguas
+        ['Sotaques', ['Oxe e do Nordeste', 'Oxe É do Nordeste'], ['King do Gelo', 'King do Gelo'],
+         ['Arretado Bom Demais', 'Arretado Bom Demais'], ['Le Petit Recreio', 'Le Petit Recreio'],
+         ['World dos Cabelos', 'World dos Cabelos'], ['Pet Uai', 'Pet Uai'], ['Le Pain Carioca', 'Le Pain Carioca'],
+         ["Casa Fruta's", "Casa Fruta's"], ['Mineira das Baterias', 'Mineira das Baterias'],
+         ['Le Crepe Carioca', 'Le Crêpe Carioca'], ['Phone do Gabriel', 'Phone do Gabriel'],
+         ['Radiadores O Paraiba', 'Radiadores O Paraíba'], ['Cafe du Recanto', 'Café du Recanto'],
+         ["Budega's Brasa", "Budega's Brasa"], ['Mineiro dos Passaros', 'Mineiro dos Pássaros'],
+         ['Make do Isaias', 'Make do Isaías'], ['Le Figuier et Lolivier', "Le Figuier et l'Olivier"],
+         ["Terapia dos Cachos's", "Terapia dos Cachos's"], ['Vixi Restaurante Nordestino', 'Vixi Restaurante Nordestino'],
+         ["Nilza's Modas", "Nilza's Modas"], ['Chez la Mer', 'Chez la Mer'],
+         ['Barbearia e Tattoo do Mineiro', 'Barbearia e Tattoo do Mineiro'], ['Le Petit Macaron', 'Le Petit Macaron'],
+         ['Maison de Fromage', 'Maison de Fromage'], ['Le Cafe d Ici', "Le Café d'Ici"],
+         ['Amelie Creperie et Bistrot', 'Amélie Creperie et Bistrot'], ["Chez l'Ami Brasserie", "Chez l'Ami Brasserie"],
+         ['Le Ble Noir Creperie', 'Le Blé Noir Creperie']],
     ],
     'familia': [
         ['Avós', ['Empadinhas da Vo Fatinha', 'Empadinhas da Vó Fatinha'], ['Frigideira da Vovo', 'Frigideira da Vovó'],
