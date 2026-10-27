@@ -40,11 +40,13 @@ SEQUENCIAS = {
          ['Tribunal Restaurante', 'Tribunal Restaurante']],
     ],
     'culturas': [
-        # sotaques: a mistura de línguas e a fala regional, onde ela surpreende
-        ['Francês abrasileirado', ['Buteco du Mateus', 'Buteco du Mateus'], ['Ferro Velho du Bibi', 'Ferro Velho du Bibi'],
-         ['Pet du Rapha', 'Pet du Rapha'], ['Mercadinho du Fogo', 'Mercadinho du Fogo']],
-        ['Madame no balcão', ['Madame Surto', 'Madame Surto'], ['Chez Marizete', 'Chez Marizete'],
-         ['Quintal de Madame', 'Quintal de Madame'], ['Bolos da Madame', 'Bolos da Madame']],
+        # sotaques: a mistura de línguas, o francês de verdade e a fala regional, onde eles surpreendem
+        ['Bistrô e creperie', ['Le Ble Noir Creperie', 'Le Blé Noir Creperie'], ['Amelie Creperie et Bistrot', 'Amélie Creperie et Bistrot'],
+         ["Chez l'Ami Brasserie", "Chez l'Ami Brasserie"], ['Le Cafe d Ici', "Le Café d'Ici"]],
+        ['Maison e petit', ['Le Figuier et Lolivier', "Le Figuier et l'Olivier"], ['Chez la Mer', 'Chez la Mer'],
+         ['Maison de Fromage', 'Maison de Fromage'], ['Le Petit Macaron', 'Le Petit Macaron']],
+        ['Francês carioca', ['Le Crepe Carioca', 'Le Crêpe Carioca'], ['Le Pain Carioca', 'Le Pain Carioca'],
+         ['Le Petit Recreio', 'Le Petit Recreio'], ['Cafe du Recanto', 'Café du Recanto']],
         ["O 's carioca", ["Nilza's Modas", "Nilza's Modas"], ["Casa Fruta's", "Casa Fruta's"],
          ["Budega's Brasa", "Budega's Brasa"], ["Terapia dos Cachos's", "Terapia dos Cachos's"]],
         ['Inglês com do e da', ['King do Gelo', 'King do Gelo'], ['World dos Cabelos', 'World dos Cabelos'],

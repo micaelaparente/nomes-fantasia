@@ -1,10 +1,10 @@
 """Quais nomes de cada tipo podem aparecer no site, um a um (METODOLOGIA.md, etapa 7).
 
 O mapa conta todos os nomes de cada tipo; os nomes mostrados ficam com os curiosos. Nos tipos de Sotaques, curioso é a
-mistura de línguas ou a fala regional, e não a fórmula ("Rio Store", "Fulano Coiffeur", "Sabor de Minas"). Nos outros
-tipos, todos podem aparecer. Uso:
+mistura de línguas, o francês de verdade ou a fala regional, e não a fórmula ("Rio Store", "Fulano Coiffeur", "Sabor de
+Minas"). Nos outros tipos, todos podem aparecer. Uso:
     from destaques import mostra
-    mostra('frances', 'MERCADINHO DU FOGO')  -> True
+    mostra('frances', 'LE BLE NOIR CREPERIE')  -> True
 """
 import re
 
@@ -17,8 +17,14 @@ def P(txt):
 
 
 DO = P('DO DA DOS DAS')
-FRANCES_ARTIGO = P('DU LE LES CHEZ')
-FRANCES_SALAO = P('COIFFEUR COIFFEURS COIFEUR COIFFURE BEAUTE BELLE SALON')
+# o francês de verdade conta palavras do léxico e mais estas (que no léxico do mapa viraram tipo de loja ou não fazem
+# falta); não contam o salão, a beleza e a bijuteria, nem "de" e "la", que também são português
+FRANCES_NOME = (FRANCES | P('''ET UN UNE D L SUR CAFE BISTRO BISTROT MARCHE CHOCOLAT CHOCOLATIER VIN PAIN BLE DOUX GRAND
+GRANDE PETIT CHIC CARRE OR ICI TEMPS MOI TOI LUI CORPS CLINIQUE OPTIQUE URBAIN URBAINS ATELIER DEPANNEUR TABLEAU FIGUIER
+BOISSONS CREPE CREPES CUISINE FROMAGE VERT ROSE BLEU JARDIN SAVON MONTAGNE VELO PLAGE AMI AMIS BONNE BON TOUJOURS CAVE
+JOUR MARIEE CENTRE MACARON ENTRECOTE''')) - P('''COIFFEUR COIFFEURS COIFEUR COIFFURE BELLE BEAUTE BIJOU BIJOUX PARFUM
+PARFUMS DE LA''')
+FRANCES_SALAO = P('COIFFEUR COIFFEURS COIFEUR COIFFURE')
 # palavras inglesas de fórmula que, antes de "do/da", não fazem mistura ("Point do Sabor", "Shop dos Filtros")
 INGLES_FORMULA = P('POINT SHOP SHOPS STORE STUDIO HAIR CAR CENTER')
 # gentílicos que, depois de "do/da" ou antes de "do/da/dos/das", viram apelido de gente ("Bar do Mineiro",
@@ -39,13 +45,11 @@ def ingles(ws, cru):
                for i in range(len(ws) - 1))
 
 
-def frances(ws):
-    if set(ws) & FRANCES_SALAO:
-        return False
-    # artigo francês com palavra portuguesa ("Mercadinho du Fogo", "Pet du Rapha", "Chez Marizete")
-    if any(w in FRANCES_ARTIGO and i + 1 < len(ws) and ws[i + 1] not in FRANCES for i, w in enumerate(ws)):
-        return True
-    return bool(set(ws) & P('MADAME MONSIEUR MADEMOISELLE'))       # Madame e Monsieur fora do salão
+def frances(cru):
+    # duas palavras francesas ou mais, fora do salão ("Le Blé Noir Creperie", "Chez la Mer", "Maison du Pet");
+    # conta o nome inteiro, com o tipo de loja, porque "Café", "Bistrot" e "Creperie" são parte do francês
+    ws = norm(cru).split()
+    return not set(ws) & FRANCES_SALAO and sum(w in FRANCES_NOME for w in ws) >= 2
 
 
 def migracao(ws):
@@ -55,7 +59,7 @@ def migracao(ws):
     return any((a in DO | P('O A') and b in GENTILICO) or (a in GENTILICO and b in DO) for a, b in pares)
 
 
-REGRA = {'ingles': lambda ws, cru: ingles(ws, cru), 'frances': lambda ws, cru: frances(ws),
+REGRA = {'ingles': lambda ws, cru: ingles(ws, cru), 'frances': lambda ws, cru: frances(cru),
          'migracao': lambda ws, cru: migracao(ws)}
 
 

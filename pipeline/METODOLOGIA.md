@@ -253,12 +253,13 @@ Grava `docs/dados.json` e `docs/lugares.json`, os dois arquivos que o site lê.
 - **Nomes mostrados:** a seleção à mão de `sequencias.py` e até 6 nomes reais por tipo e bairro, os de tamanho mais
   legível primeiro, sem quase-repetidos, com a pontuação do letreiro e sem a razão social.
 - **Nos Sotaques, só os curiosos** (`destaques.py`). O mapa conta todos os nomes do tipo; os mostrados são a mistura de
-  línguas ou a fala regional, e não a fórmula:
+  línguas, o francês de verdade ou a fala regional, e não a fórmula:
   - inglês: o 's numa palavra portuguesa que não é nome de gente ("Nilza's Modas", "Casa Fruta's", "Budega's Brasa"), ou
     palavra inglesa costurada no português com do/da ("King do Gelo", "World dos Cabelos"); fora "Point do X", "Shop
     dos X" e "Rio Store";
-  - francês: artigo francês com palavra portuguesa ("Mercadinho du Fogo", "Pet du Rapha", "Chez Marizete"), ou Madame e
-    Monsieur ("Madame Surto", "Quintal de Madame"); fora o salão ("Fulano Coiffeur", "Belle", "Beauté");
+  - francês: duas palavras francesas ou mais ("Le Blé Noir Creperie", "Chez la Mer", "Le Pain Carioca"), contando o
+    tipo de loja (Café, Bistrot, Creperie); não contam Belle, Beauté, Bijoux, Parfum, nem "de" e "la", e o salão
+    ("Fulano Coiffeur") fica de fora;
   - Sotaques do Brasil: a fala regional ("Uai", "Oxente", "Vixi", "Arretado") ou o gentílico como apelido de gente ("Bar
     do Mineiro", "Mineira das Baterias", "Radiadores O Paraíba"); fora a origem do produto ("Sabor de Minas",
     "Delícias do Nordeste").
