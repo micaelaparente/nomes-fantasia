@@ -525,8 +525,9 @@ function mostrarDica() {
   const d = $('balao');
   if (!hover || hover.tipo !== 'bairro' || anim || !D.celsBairro[hover.nome]) { d.hidden = true; return; }
   const b = hover.nome, ex = exemplos(b, 5);
-  d.innerHTML = `<b>${e(b)}</b>` + (ex.length ? ex.map(([n, s]) => `<span><i style="background:${COR[s]}"></i>${e(n)}</span>`).join('')
-    : '<span>Nenhum letreiro deste capítulo aqui</span>');
+  const mais = (foco ? [foco] : D.conceitos[cap]).reduce((t, s) => t + L.bairros[b][2][D.subs.indexOf(s)], 0) - ex.length;
+  d.innerHTML = `<b>${e(b)}</b>` + ex.map(([n, s]) => `<span><i style="background:${COR[s]}"></i>${e(n)}</span>`).join('')
+    + (mais > 0 ? `<em>+${mais}</em>` : '');
   // em cima dos quadradinhos do bairro; perto do topo do palco, embaixo deles
   const cs = D.celsBairro[b], xs = cs.map(q => q[0]), ys = cs.map(q => q[1]);
   const X = ox + ((Math.min(...xs) + Math.max(...xs) + 1) / 2 - V.x0) * T, Y0 = oy + (Math.min(...ys) - V.y0) * T, Y1 = oy + (Math.max(...ys) + 1 - V.y0) * T;
