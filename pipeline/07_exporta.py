@@ -10,7 +10,7 @@ dados.json: grade (total e contagem por tipo em cada quadradinho), ranking (bair
 a média da cidade, e o contraste entre regiões), comparacao (quantidade e peso de cada tipo nas seis regiões), centros
 dos bairros e das regiões, e as sequencias de nomes de destaque.
 lugares.json: bairros (região, total e contagem por tipo), o bairro de cada quadradinho e até POR_BAIRRO nomes reais por
-tipo e bairro.
+tipo e bairro, os curiosos primeiro.
 Uso: python pipeline/07_exporta.py
 """
 import json
@@ -109,8 +109,7 @@ for r in df.itertuples():
             sub_rp[s][rp] += 1
         if ap:
             sub_ap[s][ap] += 1
-        if mostra(s, r.nome_fantasia):
-            pool[s][b].setdefault(exibe(r.nome_fantasia), (r.x, r.y, tipo_cnae(r.cnae)))
+        pool[s][b].setdefault(exibe(r.nome_fantasia), (not mostra(s, r.nome_fantasia), r.x, r.y, tipo_cnae(r.cnae)))
     por_nome.setdefault(r.nome, (r.x, r.y, b, tipo_cnae(r.cnae)))
 N = sum(tot_b.values())
 print('comércios', N, '| na grade', sum(c[0] for c in celulas.values()), '| quadradinhos', len(celulas))
@@ -167,9 +166,9 @@ celula_bairro = [idx_b.get(cel_b[k].most_common(1)[0][0], -1) for k in celulas]
 
 
 def escolhe(cands):
-    """Os mais legíveis primeiro, sem quase-repetidos (FABRICA / FRABRICA DE BOLO VO ALZIRA)."""
+    """Os curiosos primeiro, depois os mais legíveis, sem quase-repetidos (FABRICA / FRABRICA DE BOLO VO ALZIRA)."""
     out = []
-    for n, (x, y, t) in sorted(cands.items(), key=lambda kv: (abs(len(kv[0]) - 16), kv[0])):
+    for n, (_, x, y, t) in sorted(cands.items(), key=lambda kv: (kv[1][0], abs(len(kv[0]) - 16), kv[0])):
         if 4 <= len(n) <= 30 and not any(SequenceMatcher(None, n, o[0]).ratio() > .8 for o in out):
             out.append([n, x, y, t])
         if len(out) == POR_BAIRRO:

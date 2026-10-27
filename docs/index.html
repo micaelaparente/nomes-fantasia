@@ -512,17 +512,20 @@ function montarOnde() {
 
 // a dica do bairro sob o cursor (ou tocado): até cinco letreiros do capítulo, cada um com a cor do seu tipo
 const titulo = s => s.toLowerCase().replace(/(^|\s)(\S)/g, (m, a, l) => a + l.toUpperCase()).replace(/ (De|Da|Do|Das|Dos|E|Di|D) /g, w => w.toLowerCase());
-// os tipos na proporção do bairro: cada vaga vai ao tipo com mais casos por nome já escolhido;
-// dentro do tipo, os curados primeiro
+// os tipos na proporção das cores do bairro no mapa: cada vaga vai ao tipo com mais quadradinhos por nome já escolhido;
+// sem cor, ou no empate, vale o peso no bairro (casos ali divididos pelos da cidade); dentro do tipo, os curados primeiro
 function exemplos(b, k) {                  // [nome, tipo]
+  const quadr = {};
+  for (const c of D.celsBairro[b]) { const s = cor(c)[0]; if (s) quadr[s] = (quadr[s] || 0) + 1; }
   const visto = new Set(), filas = (foco ? [foco] : D.conceitos[cap]).map(s => {
     const curados = D.sequencias[cap].flatMap(g => g[1]).filter(it => it[3] === b && it[4] === s).map(it => it[2]);
-    return { s, n: L.bairros[b][2][D.subs.indexOf(s)], ns: curados.concat(((L.nomes[s] || {})[b] || []).map(x => titulo(x[0]))), out: 0 };
+    const i = D.subs.indexOf(s);
+    return { s, q: quadr[s] || 0, n: L.bairros[b][2][i] / L.cidade.subs[i], ns: curados.concat(((L.nomes[s] || {})[b] || []).map(x => titulo(x[0]))), out: 0 };
   });
   const out = [];
   while (out.length < k) {
     for (const f of filas) while (f.ns.length && visto.has(norm(f.ns[0]))) f.ns.shift();
-    const f = filas.filter(f => f.ns.length).sort((a, b) => b.n / (b.out + 1) - a.n / (a.out + 1))[0];
+    const f = filas.filter(f => f.ns.length).sort((a, b) => b.q / (b.out + 1) - a.q / (a.out + 1) || b.n / (b.out + 1) - a.n / (a.out + 1))[0];
     if (!f) break;
     const n = f.ns.shift(); visto.add(norm(n)); f.out++; out.push([n, f.s]);
   }
@@ -647,6 +650,15 @@ function degraus(g, cels) {
   }
 }
 
+// a cor de um quadradinho: o tipo que mais passa da média da cidade, com 2 casos ou mais e 20% acima dela
+function cor(c) {
+  const s = c.suave, n = s[0]; let melhor = null, mi = 0;
+  for (const sub of foco ? [foco] : D.conceitos[cap]) {
+    const i = D.subs.indexOf(sub), cv = s[1 + i], idx = (cv / n) / D.taxa[i];
+    if (cv >= 2 && idx > mi) { mi = idx; melhor = sub; }
+  }
+  return mi >= 1.2 ? [melhor, mi] : [null, mi];
+}
 function desenharBase() {
   if (!D || !T || !cap) return;
   bctx.setTransform(dpr, 0, 0, dpr, 0, 0); bctx.clearRect(0, 0, W, H);
@@ -657,16 +669,12 @@ function desenharBase() {
   // respiro: os nomes ficam a pelo menos RESPIRO px de qualquer quadradinho do lugar (fora dele o mapa fica apagado e pode ser coberto)
   const RESPIRO = W < 700 ? 10 : 24;
   for (const c of D.grade) {
-    const s = c.suave, n = s[0]; let melhor = null, mi = 0;
-    for (const sub of foco ? [foco] : D.conceitos[cap]) {
-      const i = D.subs.indexOf(sub), cv = s[1 + i], idx = (cv / n) / D.taxa[i];
-      if (cv >= 2 && idx > mi) { mi = idx; melhor = sub; }
-    }
+    const [melhor, mi] = cor(c);
     const X = ox + (c[0] - V.x0) * T, Y = oy + (c[1] - V.y0) * T;
     if (X > W || Y > H || X + T < 0 || Y + T < 0) continue;
     const fora = reg && c.regiao !== reg;
     bctx.globalAlpha = fora ? .22 : 1;
-    bctx.fillStyle = melhor && mi >= 1.2 ? mix(COR[melhor], CSS.ladrilho, .25 + .75 * clamp((mi - 1.2) / 2.3, 0, 1))
+    bctx.fillStyle = melhor ? mix(COR[melhor], CSS.ladrilho, .25 + .75 * clamp((mi - 1.2) / 2.3, 0, 1))
       : c[2] < 4 ? CSS['ladrilho-raro'] : CSS.ladrilho;
     bctx.fillRect(X, Y, T - g, T - g);
     if (!fora) fixo.push([X - RESPIRO, Y - RESPIRO, X + T + RESPIRO, Y + T + RESPIRO]);

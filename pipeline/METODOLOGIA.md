@@ -252,8 +252,9 @@ Grava `docs/dados.json` e `docs/lugares.json`, os dois arquivos que o site lê.
   o site não mostra ranking para ele.
 - **Nomes mostrados:** a seleção à mão de `sequencias.py` e até 6 nomes reais por tipo e bairro, os de tamanho mais
   legível primeiro, sem quase-repetidos, com a pontuação do letreiro e sem a razão social.
-- **Nos Sotaques, só os curiosos** (`destaques.py`). O mapa conta todos os nomes do tipo; os mostrados são a mistura de
-  línguas, o francês de verdade ou a fala regional, e não a fórmula:
+- **Nos Sotaques, os curiosos primeiro** (`destaques.py`). O mapa conta todos os nomes do tipo; entre os mostrados de
+  cada bairro, vêm primeiro a mistura de línguas, o francês de verdade ou a fala regional, e a fórmula só completa onde
+  eles faltam (São Cristóvão tem 11 nomes nordestinos, nenhum curioso):
   - inglês: o 's numa palavra portuguesa que não é nome de gente ("Nilza's Modas", "Casa Fruta's", "Budega's Brasa"), ou
     palavra inglesa costurada no português com do/da ("King do Gelo", "World dos Cabelos"); fora "Point do X", "Shop
     dos X" e "Rio Store";

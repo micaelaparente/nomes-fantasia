@@ -1,8 +1,9 @@
-"""Quais nomes de cada tipo podem aparecer no site, um a um (METODOLOGIA.md, etapa 7).
+"""Quais nomes de cada tipo vêm primeiro no site, um a um (METODOLOGIA.md, etapa 7).
 
-O mapa conta todos os nomes de cada tipo; os nomes mostrados ficam com os curiosos. Nos tipos de Sotaques, curioso é a
+O mapa conta todos os nomes de cada tipo; entre os nomes mostrados, os curiosos vêm primeiro e os outros completam
+onde faltam. Nos tipos de Sotaques, curioso é a
 mistura de línguas, o francês de verdade ou a fala regional, e não a fórmula ("Rio Store", "Fulano Coiffeur", "Sabor de
-Minas"). Nos outros tipos, todos podem aparecer. Uso:
+Minas"). Nos outros tipos, todos são curiosos. Uso:
     from destaques import mostra
     mostra('frances', 'LE BLE NOIR CREPERIE')  -> True
 """
