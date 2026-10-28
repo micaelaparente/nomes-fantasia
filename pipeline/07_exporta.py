@@ -111,6 +111,7 @@ for r in df.itertuples():
             sub_ap[s][ap] += 1
         pool[s][b].setdefault(exibe(r.nome_fantasia), (not mostra(s, r.nome_fantasia), r.x, r.y, tipo_cnae(r.cnae)))
     por_nome.setdefault(r.nome, (r.x, r.y, b, tipo_cnae(r.cnae)))
+    por_nome.setdefault((r.nome, ap), (r.x, r.y, b, tipo_cnae(r.cnae)))   # o mesmo nome dentro de uma região
 N = sum(tot_b.values())
 print('comércios', N, '| na grade', sum(c[0] for c in celulas.values()), '| quadradinhos', len(celulas))
 print(dict(cont))
@@ -137,7 +138,7 @@ for conceito, caps in SEQUENCIAS.items():
     for rotulo, *nomes in caps:
         itens = []
         for dado, exib in nomes:
-            p = por_nome.get(limpa(dado))
+            p = por_nome.get((limpa(dado), rotulo) if rotulo in REGIOES else limpa(dado))   # grupo de região: o nome dali
             if p is None:
                 print('não achado:', conceito, dado)
                 continue

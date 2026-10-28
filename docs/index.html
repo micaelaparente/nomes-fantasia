@@ -430,9 +430,10 @@ function sob(ev) {
 
 // ---------- capítulo, tipos e o que a coluna diz
 // a ordem dos nomes: alterna entre os grupos (avó, tio, mãe…); na cidade, o tamanho vem em pares e uma lista só
-// (as frases em conversa, os sotaques do mais inusitado ao menos) vem na ordem dela;
+// (os sotaques do mais inusitado ao menos) vem na ordem dela; as frases são uma conversa, a da cidade ou a da região;
 // numa região, primeiro os nomes curados que caem ali, depois nomes reais da região (os bairros com mais casos primeiro)
 function montarFila() {
+  if (conversa()) return D.sequencias.frases.find(g => g[0] === (lugar ? lugar.nome : 'Conversa'))[1].filter(it => !foco || it[4] === foco);
   if (!lugar) {
     const grupos = D.sequencias[cap].map(g => g[1].filter(it => !foco || it[4] === foco)).filter(g => g.length);
     if (cap === 'tamanho' || D.sequencias[cap].length === 1) return grupos.flat();
@@ -451,6 +452,7 @@ function montarFila() {
     return curados.concat(doLugar).slice(0, 16);
   }).filter(g => g.length));
 }
+const conversa = () => cap === 'frases' && !(lugar && foco);   // filtrada por tipo numa região, vira lista de nomes dali
 function intercalar(grupos) {
   const f = [];
   for (let i = 0; grupos.some(g => i < g.length); i++) for (const g of grupos) if (g[i]) f.push(g[i]);
@@ -584,7 +586,7 @@ function proximo() {
   const repetido = rotulos.findIndex(o => o.nome === nome);           // nome que volta na fila: tira a cópia antiga
   if (repetido >= 0) tirar(rotulos.splice(repetido, 1)[0]);
   const el = document.createElement('div');
-  el.className = 'rotulo' + (cap === 'frases' && !lugar ? ' conversa' : '') + (lugar ? ' sobre-mapa' : '');
+  el.className = 'rotulo' + (conversa() ? ' conversa' : '') + (lugar ? ' sobre-mapa' : '');
   el.style.setProperty('--marca', mix(COR[sub], CSS.papel, .55));
   el.innerHTML = `<b><mark>${e(nome)}</mark></b><small>${e(bairro)}${tipo ? ' · ' + e(tipo) : ''}</small>`;   // o tipo do comércio (CNAE), quando não é genérico
   el.style.visibility = 'hidden'; camada.append(el);
