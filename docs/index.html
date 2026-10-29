@@ -163,8 +163,12 @@ h2 { margin: 0; font: 800 clamp(36px, 3.4vw, 52px)/.9 var(--texto); font-stretch
   .lema { font-size: 17px; }
   .tipos-bloco { padding-top: 0; overflow: visible; }
   .legenda button { min-height: 44px; }
-  .trilha { left: 16px; right: 16px; top: 12px; gap: 2px 12px; font-size: 13px; }
-  .trilha .dica { flex-basis: 100%; font-size: 15px; }
+  /* as regiões numa linha que rola de lado: quebradas em três linhas, tomavam o papel dos nomes em cima do mapa */
+  .trilha { left: 0; right: 0; top: 4px; padding: 0 16px; gap: 12px; font-size: 13px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+    pointer-events: auto; touch-action: pan-x pan-y; }
+  .trilha::-webkit-scrollbar { display: none; }
+  .trilha > * { flex: none; }
+  .trilha .dica { font-size: 15px; }
   .trilha b { font-size: 21px; }
   .trilha button { min-height: 40px; }
   .rotulo { max-width: 170px; gap: 2px; }
@@ -618,6 +622,7 @@ function limpar() { for (const o of rotulos.concat(saindo)) o.el.remove(); rotul
 function medir() {
   if (!D) return;
   const r = palco.getBoundingClientRect();
+  if (r.width === W && r.height === H && (window.devicePixelRatio || 1) === dpr) return;   // aviso sem mudança: os nomes ficam
   dpr = window.devicePixelRatio || 1; W = r.width; H = r.height;
   for (const c of [tela, base]) { c.width = Math.round(W * dpr); c.height = Math.round(H * dpr); }
   enquadrar(); limpar(); desenharBase();
